@@ -13,10 +13,26 @@ class Block:SKSpriteNode {
     var lastColor = ""
     var type = "Normal" //Normal, Bonus_Time
     var typeIndicator = SKSpriteNode(imageNamed: "Bonus_Time")
+    var popSound = SKAction.playSoundFileNamed("popSound.m4a", waitForCompletion: false)
     
-    func popAnimation() {
-        lastColor = currentColor
-        updateColor()
+    func popAnimation(_ pos:Double) {
+        self.run(SKAction.wait(forDuration: 0.08 * pos), completion: {
+            let nBlock = Block(imageNamed: "Block_\(self.currentColor)")
+            nBlock.size = self.size
+            nBlock.currentColor = self.currentColor
+            nBlock.position = self.position
+            self.parent?.addChild(nBlock)
+            
+            self.run(self.popSound)
+            
+            let newAction = SKAction.group([SKAction.resize(toWidth: self.size.width * 2.5, height: self.size.height * 2.5, duration: 0.17),SKAction.fadeAlpha(to: 0, duration: 0.17)])
+            nBlock.run(newAction, completion: {
+                nBlock.removeFromParent()
+            })
+            
+            self.lastColor = self.currentColor
+            self.updateColor()
+        })
     }
     
     func selectNewColor() {
@@ -47,9 +63,9 @@ class Block:SKSpriteNode {
                 currentColor = "Rainbow"
             }
             
-            if randNum2 < 993 && randNum2 >= 985 {
+            if randNum2 < 875 && randNum2 >= 700 {  //OG Values: 993 && 985
                 type = "Bonus_Points"
-            } else if randNum2 >= 993 {
+            } else if randNum2 >= 875 {
                 type = "Bonus_Time"
             } else {
                 type = "Normal"

@@ -11,7 +11,6 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,10 +55,13 @@ class GameViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
     }
     
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    func returnToMenu() {
+        self.dismiss(animated: true, completion: {})
     }
 }

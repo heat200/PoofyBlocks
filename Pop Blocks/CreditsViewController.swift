@@ -1,0 +1,40 @@
+//
+//  CreditsViewController.swift
+//  Pop Blocks
+//
+//  Created by Bryan Mazariegos on 6/7/17.
+//  Copyright © 2017 Bryan Mazariegos. All rights reserved.
+//
+
+import UIKit
+
+class CreditsViewController: UIViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    override var shouldAutorotate: Bool {
+        return true
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return .allButUpsideDown
+        } else {
+            return .all
+        }
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    @IBAction func returnToMenu() {
+        self.dismiss(animated: true, completion: {})
+    }
+}
