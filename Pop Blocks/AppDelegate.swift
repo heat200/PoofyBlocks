@@ -19,6 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let hiScore = defaults.object(forKey: "highScore") {
             highScore = hiScore as! Int
         }
+        
+        if let elapTime = defaults.object(forKey: "elapsedTime") {
+            elapsedTime = elapTime as! Int
+        }
+        
         return true
     }
 

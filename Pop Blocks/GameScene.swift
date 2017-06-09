@@ -12,6 +12,7 @@ import GameplayKit
 var highScore = 0
 var elapsedTime = 0
 var soundOn = true
+var top10Scores = [Int]()
 
 class GameScene: SKScene {
     var entities = [GKEntity]()
@@ -24,6 +25,7 @@ class GameScene: SKScene {
     var gameTime = 10
     var gameScore = 0
     var gamePlayTime = 0
+    var gptSeconds = 0
     var timeLabel:SKLabelNode!
     var totalTimeLabel:SKLabelNode!
     var scoreLabel:SKLabelNode!
@@ -36,6 +38,7 @@ class GameScene: SKScene {
     var menuButton:SKSpriteNode!
     var volumeButton:SKSpriteNode!
     var lastSecondCounted:TimeInterval = 0
+    var background:SKSpriteNode!
     var block_1:Block!
     var block_2:Block!
     var block_3:Block!
@@ -87,6 +90,7 @@ class GameScene: SKScene {
         timeOverLabel = self.childNode(withName: "timeOverLabel") as! SKLabelNode
         highScoreLabel = self.childNode(withName: "highScoreLabel") as! SKLabelNode
         scoreLabel = self.childNode(withName: "scoreLabel") as! SKLabelNode
+        background = self.childNode(withName: "background") as! SKSpriteNode
         block_1 = self.childNode(withName: "block_1") as! Block
         block_2 = self.childNode(withName: "block_2") as! Block
         block_3 = self.childNode(withName: "block_3") as! Block
@@ -130,6 +134,43 @@ class GameScene: SKScene {
         volumeButton.isHidden = true
         pauseOverlay.size.height *= 2
         pauseOverlay.size.width *= 3
+        
+        block_1.setUpAcceptedBlocks()
+        block_2.setUpAcceptedBlocks()
+        block_3.setUpAcceptedBlocks()
+        block_4.setUpAcceptedBlocks()
+        block_5.setUpAcceptedBlocks()
+        block_6.setUpAcceptedBlocks()
+        block_7.setUpAcceptedBlocks()
+        block_8.setUpAcceptedBlocks()
+        block_9.setUpAcceptedBlocks()
+        block_10.setUpAcceptedBlocks()
+        block_11.setUpAcceptedBlocks()
+        block_12.setUpAcceptedBlocks()
+        block_13.setUpAcceptedBlocks()
+        block_14.setUpAcceptedBlocks()
+        block_15.setUpAcceptedBlocks()
+        block_16.setUpAcceptedBlocks()
+        block_17.setUpAcceptedBlocks()
+        block_18.setUpAcceptedBlocks()
+        block_19.setUpAcceptedBlocks()
+        block_20.setUpAcceptedBlocks()
+        block_21.setUpAcceptedBlocks()
+        block_22.setUpAcceptedBlocks()
+        block_23.setUpAcceptedBlocks()
+        block_24.setUpAcceptedBlocks()
+        block_25.setUpAcceptedBlocks()
+        block_26.setUpAcceptedBlocks()
+        block_27.setUpAcceptedBlocks()
+        block_28.setUpAcceptedBlocks()
+        block_29.setUpAcceptedBlocks()
+        block_30.setUpAcceptedBlocks()
+        block_31.setUpAcceptedBlocks()
+        block_32.setUpAcceptedBlocks()
+        block_33.setUpAcceptedBlocks()
+        block_34.setUpAcceptedBlocks()
+        block_35.setUpAcceptedBlocks()
+        block_36.setUpAcceptedBlocks()
     }
     
     func touchDown(atPoint pos : CGPoint) {
@@ -203,7 +244,11 @@ class GameScene: SKScene {
                 }
                 self.checkSwipedBlocks()
             } else {
-                self.safeRemoveBlocks()
+                if blockArray.count > 2 {
+                    self.checkSwipedBlocks()
+                } else {
+                    self.safeRemoveBlocks()
+                }
             }
         }
     }
@@ -224,7 +269,7 @@ class GameScene: SKScene {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
-    func pickColorToCheckFor(_ pos:Int) -> String {
+    func pickColorToCheckFor(_ pos:Int) -> String { //CAN IMPROVE BY COUNTING BLOCKS BY COLOR AND THEN COMPARING EACH COLOR'S COUNT
         var colorToCheckFor = blockArray[pos].currentColor
         
         if colorToCheckFor == "Rainbow" {
@@ -235,29 +280,38 @@ class GameScene: SKScene {
     }
     
     func checkSwipedBlocks() {
-        if blockArray.count > 2 {
+        if blockArray.count >= 3 {
             var x = 0
             let colorToCheckFor = pickColorToCheckFor(0)
             var timeBlockCount = 0
             var scoreBlockCount = 0
             var totalBlocks = blockArray.count
-            var freebieRemoved = false
             
             var blocksAreGood = true
             
             while x < blockArray.count {
-                if blockArray[x].currentColor != colorToCheckFor {
-                    if freebieRemoved {
-                        if blockArray[x].currentColor != "Rainbow" {
-                            blocksAreGood = false
-                        }
-                    } else {
-                        if blockArray[x].currentColor != "Rainbow" {
+                if blockArray[x].currentColor != colorToCheckFor  && blockArray[x].currentColor != "Rainbow"{
+                    if x != blockArray.count - 1 {
+                        if blockArray[x - 1].acceptedBlocks.contains(blockArray[x + 1]) {
                             self.uncolorize(blockArray[x])
                             blockArray.remove(at: x)
                             totalBlocks = blockArray.count
                             x = 0
-                            freebieRemoved = true
+                        } else {
+                            if blockArray[x].currentColor != "Rainbow" {
+                                blocksAreGood = false
+                                print("Block #\(blockArray[x].blockID()) couldn't find neighbors :(")
+                                print("Block #s \(blockArray[x - 1].blockID()) & \(blockArray[x + 1].blockID())")
+                            }
+                        }
+                    } else {
+                        if blockArray.count > 3 {
+                            self.uncolorize(blockArray[x])
+                            blockArray.remove(at: x)
+                            totalBlocks = blockArray.count
+                            x = 0
+                        } else {
+                            blocksAreGood = false
                         }
                     }
                 }
@@ -334,44 +388,9 @@ class GameScene: SKScene {
     }
     
     func timeOver() {
-        self.uncolorize(self.block_1)
-        self.uncolorize(self.block_2)
-        self.uncolorize(self.block_3)
-        self.uncolorize(self.block_4)
-        self.uncolorize(self.block_5)
-        self.uncolorize(self.block_6)
-        self.uncolorize(self.block_7)
-        self.uncolorize(self.block_8)
-        self.uncolorize(self.block_9)
-        self.uncolorize(self.block_10)
-        self.uncolorize(self.block_11)
-        self.uncolorize(self.block_12)
-        self.uncolorize(self.block_13)
-        self.uncolorize(self.block_14)
-        self.uncolorize(self.block_15)
-        self.uncolorize(self.block_16)
-        self.uncolorize(self.block_17)
-        self.uncolorize(self.block_18)
-        self.uncolorize(self.block_19)
-        self.uncolorize(self.block_20)
-        self.uncolorize(self.block_21)
-        self.uncolorize(self.block_22)
-        self.uncolorize(self.block_23)
-        self.uncolorize(self.block_24)
-        self.uncolorize(self.block_25)
-        self.uncolorize(self.block_26)
-        self.uncolorize(self.block_27)
-        self.uncolorize(self.block_28)
-        self.uncolorize(self.block_29)
-        self.uncolorize(self.block_30)
-        self.uncolorize(self.block_31)
-        self.uncolorize(self.block_32)
-        self.uncolorize(self.block_33)
-        self.uncolorize(self.block_34)
-        self.uncolorize(self.block_35)
-        self.uncolorize(self.block_36)
-        
         timeOverLabel.isHidden = false
+        background.color = .red
+        defaults.set(elapsedTime, forKey: "elapsedTime")
         self.run(SKAction.wait(forDuration: 0.06),completion:{
             self.block_1.currentColor = "Grey"
             self.massUpdateColor()
@@ -434,6 +453,7 @@ class GameScene: SKScene {
             gameScore = 0
             gamePlayTime = 0
             freeSecondPassed = false
+            background.color = .white
             self.run(SKAction.wait(forDuration: 0.06),completion:{
                 self.block_1.currentColor = "Grey"
                 self.massUpdateColor()
@@ -496,6 +516,7 @@ class GameScene: SKScene {
             gamePlayTime = 0
             gameScore = 0
             freeSecondPassed = false
+            background.color = .white
             self.run(SKAction.wait(forDuration: 0.06),completion:{
                 self.block_1.selectNewColor()
                 self.run(SKAction.wait(forDuration: 0.06),completion:{
@@ -562,6 +583,7 @@ class GameScene: SKScene {
                 gameTime = 0
                 timeOver()
             } else {
+                self.backgroundHeartBeat()
                 if gameTime == 60 && !freeSecondPassed {
                     freeSecondPassed = true
                 } else {
@@ -573,9 +595,9 @@ class GameScene: SKScene {
             }
         }
         
-        let hoursPassed = (gamePlayTime - gamePlayTime%60%60)/60/60
-        let minutesPassed = (gamePlayTime - gamePlayTime%60)/60
-        let secondsPassed = (gamePlayTime - minutesPassed*60)
+        let hoursPassed:Int = gamePlayTime/60/60
+        let minutesPassed:Int = gamePlayTime/60 - (hoursPassed * 60)
+        let secondsPassed:Int = gamePlayTime - (minutesPassed * 60) - (hoursPassed * 60 * 60)
         
         totalTimeLabel.text = "Total Time: \(hoursPassed)h \(minutesPassed)m \(secondsPassed)s"
         timeLabel.text = "Time Left: \(gameTime)s"
@@ -587,7 +609,7 @@ class GameScene: SKScene {
             defaults.set(highScore, forKey: "highScore")
         }
         
-        if timeOverLabel.isHidden {
+        if timeOverLabel.isHidden && pauseOverlay.isHidden {
             block_1.selectNewColor()
             block_2.selectNewColor()
             block_3.selectNewColor()
@@ -669,6 +691,22 @@ class GameScene: SKScene {
     
     func uncolorize(_ block:Block) {
         block.run(SKAction.fadeAlpha(to: 1, duration: 0.2))
+    }
+    
+    func backgroundHeartBeat() {
+        if gameTime < 6 {
+            background.run(SKAction.colorize(with: .red, colorBlendFactor: 1.0, duration: 0.48),completion:{
+                self.background.run(SKAction.colorize(with: .white, colorBlendFactor: 1.0, duration: 0.48))
+            })
+        } else if gameTime < 11 {
+            background.run(SKAction.colorize(with: .orange, colorBlendFactor: 1.0, duration: 0.48),completion:{
+                self.background.run(SKAction.colorize(with: .white, colorBlendFactor: 1.0, duration: 0.48))
+            })
+        } else if gameTime < 16 {
+            background.run(SKAction.colorize(with: .yellow, colorBlendFactor: 1.0, duration: 0.48),completion:{
+                self.background.run(SKAction.colorize(with: .white, colorBlendFactor: 1.0, duration: 0.48))
+            })
+        }
     }
     
     func massUpdateColor() {
