@@ -1,5 +1,5 @@
 //
-//  OptionsViewController.swift
+//  StatsViewController.swift
 //  Pop Blocks
 //
 //  Created by Bryan Mazariegos on 6/7/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class OptionsViewController: UIViewController {
+class StatsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,11 +19,7 @@ class OptionsViewController: UIViewController {
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
-        } else {
-            return .all
-        }
+        return .portrait
     }
     
     override func didReceiveMemoryWarning() {

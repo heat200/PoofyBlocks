@@ -150,50 +150,6 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Block_Grey" translatesAutoresizingMaskIntoConstraints="NO" id="IZc-Cc-rzh">
                                 <rect key="frame" x="300" y="93" width="75" height="75"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DaL-fg-0gM">
-                                <rect key="frame" x="87" y="304" width="200" height="60"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
-                                <state key="normal" title="Leaders" backgroundImage="Button_Background">
-                                    <color key="titleColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </state>
-                                <connections>
-                                    <segue destination="XMe-CB-twL" kind="show" id="0ge-RH-OhJ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQk-mz-hEF">
-                                <rect key="frame" x="87" y="394" width="200" height="60"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
-                                <state key="normal" title="Options" backgroundImage="Button_Background">
-                                    <color key="titleColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </state>
-                                <connections>
-                                    <segue destination="nxp-gD-TLi" kind="show" id="JoB-Ti-gYH"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDr-DV-i99">
-                                <rect key="frame" x="87" y="484" width="200" height="60"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
-                                <state key="normal" title="Credits" backgroundImage="Button_Background">
-                                    <color key="titleColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </state>
-                                <connections>
-                                    <segue destination="91V-pC-KNP" kind="show" id="i8g-xd-IoJ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yyN-tu-H6x">
-                                <rect key="frame" x="87" y="214" width="200" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="1NM-K0-Xtp"/>
-                                    <constraint firstAttribute="height" constant="60" id="oeZ-M9-yaA"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
-                                <state key="normal" title="Play" backgroundImage="Button_Background">
-                                    <color key="titleColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </state>
-                                <connections>
-                                    <segue destination="BV1-FR-VrT" kind="show" id="znC-ro-8t9"/>
-                                </connections>
-                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Block_Yellow" translatesAutoresizingMaskIntoConstraints="NO" id="DFr-eG-EC7">
                                 <rect key="frame" x="31" y="145" width="10" height="10"/>
                                 <constraints>
@@ -791,6 +747,50 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Block_Grey" translatesAutoresizingMaskIntoConstraints="NO" id="kLG-xX-IxP">
                                 <rect key="frame" x="300" y="592" width="75" height="75"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DaL-fg-0gM">
+                                <rect key="frame" x="87" y="304" width="200" height="60"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                <state key="normal" title="Leaders" backgroundImage="Button_Background">
+                                    <color key="titleColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </state>
+                                <connections>
+                                    <segue destination="XMe-CB-twL" kind="show" id="0ge-RH-OhJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQk-mz-hEF">
+                                <rect key="frame" x="87" y="394" width="200" height="60"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                <state key="normal" title="Stats" backgroundImage="Button_Background">
+                                    <color key="titleColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </state>
+                                <connections>
+                                    <segue destination="nxp-gD-TLi" kind="show" id="JoB-Ti-gYH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDr-DV-i99">
+                                <rect key="frame" x="87" y="484" width="200" height="60"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                <state key="normal" title="Credits" backgroundImage="Button_Background">
+                                    <color key="titleColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </state>
+                                <connections>
+                                    <segue destination="91V-pC-KNP" kind="show" id="i8g-xd-IoJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yyN-tu-H6x">
+                                <rect key="frame" x="87" y="214" width="200" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="1NM-K0-Xtp"/>
+                                    <constraint firstAttribute="height" constant="60" id="oeZ-M9-yaA"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                <state key="normal" title="Play" backgroundImage="Button_Background">
+                                    <color key="titleColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </state>
+                                <connections>
+                                    <segue destination="BV1-FR-VrT" kind="show" id="znC-ro-8t9"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1234,10 +1234,10 @@
             </objects>
             <point key="canvasLocation" x="1025" y="1281"/>
         </scene>
-        <!--Options View Controller-->
+        <!--Stats View Controller-->
         <scene sceneID="gbM-6A-C3w">
             <objects>
-                <viewController id="nxp-gD-TLi" customClass="OptionsViewController" customModule="Pop_Blocks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="nxp-gD-TLi" customClass="StatsViewController" customModule="Pop_Blocks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Srz-zM-2EC"/>
                         <viewControllerLayoutGuide type="bottom" id="FLS-BE-bd0"/>

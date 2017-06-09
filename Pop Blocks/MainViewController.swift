@@ -8,6 +8,8 @@
 
 import UIKit
 
+let defaults = UserDefaults.standard
+
 class MainViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -19,11 +21,7 @@ class MainViewController: UIViewController {
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
-        } else {
-            return .all
-        }
+        return .portrait
     }
 
     override func didReceiveMemoryWarning() {

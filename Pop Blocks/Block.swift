@@ -17,13 +17,14 @@ class Block:SKSpriteNode {
     
     func popAnimation(_ pos:Double) {
         self.run(SKAction.wait(forDuration: 0.08 * pos), completion: {
-            let nBlock = Block(imageNamed: "Block_\(self.currentColor)")
+            let nBlock = SKSpriteNode(imageNamed: "Block_\(self.currentColor)")
             nBlock.size = self.size
-            nBlock.currentColor = self.currentColor
             nBlock.position = self.position
             self.parent?.addChild(nBlock)
             
-            self.run(self.popSound)
+            if soundOn {
+                self.run(self.popSound)
+            }
             
             let newAction = SKAction.group([SKAction.resize(toWidth: self.size.width * 2.5, height: self.size.height * 2.5, duration: 0.17),SKAction.fadeAlpha(to: 0, duration: 0.17)])
             nBlock.run(newAction, completion: {
@@ -35,7 +36,89 @@ class Block:SKSpriteNode {
         })
     }
     
+    func blockID() -> Int {
+        var id = 0
+        if self.name == "block_1" {
+            id = 1
+        } else if self.name == "block_2" {
+            id = 2
+        } else if self.name == "block_3" {
+            id = 3
+        } else if self.name == "block_4" {
+            id = 4
+        } else if self.name == "block_5" {
+            id = 5
+        } else if self.name == "block_6" {
+            id = 6
+        } else if self.name == "block_7" {
+            id = 7
+        } else if self.name == "block_8" {
+            id = 8
+        } else if self.name == "block_9" {
+            id = 9
+        } else if self.name == "block_10" {
+            id = 10
+        } else if self.name == "block_11" {
+            id = 11
+        } else if self.name == "block_12" {
+            id = 12
+        } else if self.name == "block_13" {
+            id = 13
+        } else if self.name == "block_14" {
+            id = 14
+        } else if self.name == "block_15" {
+            id = 15
+        } else if self.name == "block_16" {
+            id = 16
+        } else if self.name == "block_17" {
+            id = 17
+        } else if self.name == "block_18" {
+            id = 18
+        } else if self.name == "block_19" {
+            id = 19
+        } else if self.name == "block_20" {
+            id = 20
+        } else if self.name == "block_21" {
+            id = 21
+        } else if self.name == "block_22" {
+            id = 22
+        } else if self.name == "block_23" {
+            id = 23
+        } else if self.name == "block_24" {
+            id = 24
+        } else if self.name == "block_25" {
+            id = 25
+        } else if self.name == "block_26" {
+            id = 26
+        } else if self.name == "block_27" {
+            id = 27
+        } else if self.name == "block_28" {
+            id = 28
+        } else if self.name == "block_29" {
+            id = 29
+        } else if self.name == "block_30" {
+            id = 30
+        } else if self.name == "block_31" {
+            id = 31
+        } else if self.name == "block_32" {
+            id = 32
+        } else if self.name == "block_33" {
+            id = 33
+        } else if self.name == "block_34" {
+            id = 34
+        } else if self.name == "block_35" {
+            id = 35
+        } else if self.name == "block_36" {
+            id = 36
+        } else {
+            id = -1
+        }
+        
+        return id
+    }
+    
     func selectNewColor() {
+        self.color = .white
         if typeIndicator.parent == nil {
             typeIndicator.position = CGPoint(x: 0, y: 0)
             typeIndicator.size.width = self.size.width/4.0
@@ -63,9 +146,9 @@ class Block:SKSpriteNode {
                 currentColor = "Rainbow"
             }
             
-            if randNum2 < 875 && randNum2 >= 700 {  //OG Values: 993 && 985
+            if randNum2 < 885 && randNum2 >= 700 {
                 type = "Bonus_Points"
-            } else if randNum2 >= 875 {
+            } else if randNum2 >= 885 {
                 type = "Bonus_Time"
             } else {
                 type = "Normal"
