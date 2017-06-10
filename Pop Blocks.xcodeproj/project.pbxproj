@@ -12,7 +12,6 @@
 		7D1F12321EE8272200078441 /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1F12311EE8272200078441 /* StatsViewController.swift */; };
 		7D1F12341EE8273100078441 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1F12331EE8273100078441 /* CreditsViewController.swift */; };
 		7D1F12361EE8274400078441 /* LeadersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1F12351EE8274400078441 /* LeadersViewController.swift */; };
-		7D363C6E1EEB81F400770E60 /* LaunchImage.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 7D363C6D1EEB81F400770E60 /* LaunchImage.PNG */; };
 		7D8409391EE0BB2D0041E4DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8409381EE0BB2D0041E4DA /* AppDelegate.swift */; };
 		7D84093B1EE0BB2D0041E4DA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 7D84093A1EE0BB2D0041E4DA /* GameScene.sks */; };
 		7D84093D1EE0BB2D0041E4DA /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 7D84093C1EE0BB2D0041E4DA /* Actions.sks */; };
@@ -26,6 +25,7 @@
 		7D8B89A21EEC0B33002BFC9E /* timeSound_Y.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7D8B899F1EEC0B24002BFC9E /* timeSound_Y.m4a */; };
 		7D8B89A31EEC0B33002BFC9E /* timeSound_O.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7D8B89A11EEC0B24002BFC9E /* timeSound_O.m4a */; };
 		7D8B89A41EEC0B33002BFC9E /* timeSound_R.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7D8B89A01EEC0B24002BFC9E /* timeSound_R.m4a */; };
+		7D8B89A61EEC115C002BFC9E /* Icon240.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D8B89A51EEC115C002BFC9E /* Icon240.png */; };
 		7DB52F321EE84D3300A2C526 /* popSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7DB52F311EE8420900A2C526 /* popSound.m4a */; };
 /* End PBXBuildFile section */
 
@@ -35,7 +35,6 @@
 		7D1F12311EE8272200078441 /* StatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
 		7D1F12331EE8273100078441 /* CreditsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
 		7D1F12351EE8274400078441 /* LeadersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeadersViewController.swift; sourceTree = "<group>"; };
-		7D363C6D1EEB81F400770E60 /* LaunchImage.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchImage.PNG; sourceTree = "<group>"; };
 		7D8409351EE0BB2D0041E4DA /* Pop Blocks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pop Blocks.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D8409381EE0BB2D0041E4DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7D84093A1EE0BB2D0041E4DA /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -51,6 +50,7 @@
 		7D8B899F1EEC0B24002BFC9E /* timeSound_Y.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = timeSound_Y.m4a; sourceTree = "<group>"; };
 		7D8B89A01EEC0B24002BFC9E /* timeSound_R.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = timeSound_R.m4a; sourceTree = "<group>"; };
 		7D8B89A11EEC0B24002BFC9E /* timeSound_O.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = timeSound_O.m4a; sourceTree = "<group>"; };
+		7D8B89A51EEC115C002BFC9E /* Icon240.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon240.png; sourceTree = "<group>"; };
 		7DB52F311EE8420900A2C526 /* popSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = popSound.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -94,7 +94,7 @@
 				7D1F12331EE8273100078441 /* CreditsViewController.swift */,
 				7D1F122D1EE7A82100078441 /* GameViewController.swift */,
 				7D84093E1EE0BB2D0041E4DA /* GameScene.swift */,
-				7D363C6D1EEB81F400770E60 /* LaunchImage.PNG */,
+				7D8B89A51EEC115C002BFC9E /* Icon240.png */,
 				7DB52F311EE8420900A2C526 /* popSound.m4a */,
 				7D8B899A1EEC0594002BFC9E /* popSound2.m4a */,
 				7D8B899D1EEC086D002BFC9E /* timeSound.m4a */,
@@ -174,10 +174,10 @@
 				7D84093B1EE0BB2D0041E4DA /* GameScene.sks in Resources */,
 				7D8B89A31EEC0B33002BFC9E /* timeSound_O.m4a in Resources */,
 				7D8409461EE0BB2D0041E4DA /* Assets.xcassets in Resources */,
-				7D363C6E1EEB81F400770E60 /* LaunchImage.PNG in Resources */,
 				7D8409491EE0BB2D0041E4DA /* LaunchScreen.storyboard in Resources */,
 				7DB52F321EE84D3300A2C526 /* popSound.m4a in Resources */,
 				7D8B89A41EEC0B33002BFC9E /* timeSound_R.m4a in Resources */,
+				7D8B89A61EEC115C002BFC9E /* Icon240.png in Resources */,
 				7D8B899E1EEC0879002BFC9E /* timeSound.m4a in Resources */,
 				7D84093D1EE0BB2D0041E4DA /* Actions.sks in Resources */,
 				7D8B899C1EEC06FE002BFC9E /* popSound2.m4a in Resources */,
@@ -265,7 +265,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -310,7 +310,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
