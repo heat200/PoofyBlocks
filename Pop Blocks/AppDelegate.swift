@@ -24,6 +24,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             elapsedTime = elapTime as! Int
         }
         
+        if let blcksPopped = defaults.object(forKey: "blocksPopped") {
+            blocksPopped = blcksPopped as! Int
+        }
+        
+        if let last3 = defaults.object(forKey: "last3Games") {
+            last3Games = last3 as! [Int]
+        }
+        
+        if let sound = defaults.object(forKey: "soundOn") {
+            soundOn = sound as! Bool
+        }
+        
         return true
     }
 

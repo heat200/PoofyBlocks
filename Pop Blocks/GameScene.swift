@@ -12,20 +12,24 @@ import GameplayKit
 var highScore = 0
 var elapsedTime = 0
 var soundOn = true
-var top10Scores = [Int]()
+var last3Games = [Int]()
+var blocksPopped = 0
 
 class GameScene: SKScene {
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
     
     private var lastUpdateTime : TimeInterval = 0
+    var timeSound = SKAction.playSoundFileNamed("timeSound.m4a", waitForCompletion: false)
+    var timeSound_Y = SKAction.playSoundFileNamed("timeSound_Y.m4a", waitForCompletion: false)
+    var timeSound_O = SKAction.playSoundFileNamed("timeSound_O.m4a", waitForCompletion: false)
+    var timeSound_R = SKAction.playSoundFileNamed("timeSound_R.m4a", waitForCompletion: false)
     var blockArray = [Block]()
     var freeSecondPassed = false
     let DEFAULT_GAMETIME = 61
     var gameTime = 10
     var gameScore = 0
     var gamePlayTime = 0
-    var gptSeconds = 0
     var timeLabel:SKLabelNode!
     var totalTimeLabel:SKLabelNode!
     var scoreLabel:SKLabelNode!
@@ -171,6 +175,8 @@ class GameScene: SKScene {
         block_34.setUpAcceptedBlocks()
         block_35.setUpAcceptedBlocks()
         block_36.setUpAcceptedBlocks()
+        toggleVolume()
+        toggleVolume()
     }
     
     func touchDown(atPoint pos : CGPoint) {
@@ -182,6 +188,20 @@ class GameScene: SKScene {
             self.restartGame()
             self.togglePause()
         } else if node == menuButton || node.parent == menuButton {
+            if last3Games.count < 3 {
+                last3Games.append(gameScore)
+            } else {
+                last3Games.insert(gameScore, at: 2)
+                last3Games.removeLast()
+            }
+            
+            print("|| touchDown()")
+            print("|| OT: \(elapsedTime)")
+            elapsedTime += gamePlayTime
+            print("|| NT: \(elapsedTime)")
+            defaults.set(last3Games,forKey:"last3Games")
+            defaults.set(elapsedTime, forKey: "elapsedTime")
+            defaults.set(blocksPopped, forKey: "blocksPopped")
             self.view?.window?.rootViewController?.dismiss(animated: true, completion: {})
         } else if node == volumeButton {
             self.toggleVolume()
@@ -269,7 +289,7 @@ class GameScene: SKScene {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
-    func pickColorToCheckFor(_ pos:Int) -> String { //CAN IMPROVE BY COUNTING BLOCKS BY COLOR AND THEN COMPARING EACH COLOR'S COUNT
+    func pickColorToCheckFor(_ pos:Int) -> String {
         var colorToCheckFor = blockArray[pos].currentColor
         
         if colorToCheckFor == "Rainbow" {
@@ -286,7 +306,6 @@ class GameScene: SKScene {
             var timeBlockCount = 0
             var scoreBlockCount = 0
             var totalBlocks = blockArray.count
-            
             var blocksAreGood = true
             
             while x < blockArray.count {
@@ -321,7 +340,7 @@ class GameScene: SKScene {
             if blocksAreGood && blockArray.count >= 3 {
                 x = 0
                 while x < blockArray.count {
-                    if blockArray[x].type == "Bonus_Score" {
+                    if blockArray[x].type == "Bonus_Points" {
                         scoreBlockCount += 1
                     } else if blockArray[x].type == "Bonus_Time" {
                         timeBlockCount += 1
@@ -331,13 +350,12 @@ class GameScene: SKScene {
                     self.uncolorize(blockArray[x])
                     x += 1
                 }
+                blocksPopped += totalBlocks
                 self.safeRemoveBlocks()
                 
-                let scoreToAdd = (totalBlocks + (scoreBlockCount * totalBlocks)) * (totalBlocks - 2) //Ranges from 3-45288
-                gameScore += scoreToAdd
+                let scoreToAdd = (totalBlocks + (scoreBlockCount * 3)) * (totalBlocks - 2) //Ranges from 3-4896
                 
                 let timeToAdd:Int = timeBlockCount * totalBlocks
-                gameTime += timeToAdd
                 
                 self.addTime(timeToAdd)
                 self.addScore(scoreToAdd)
@@ -366,6 +384,7 @@ class GameScene: SKScene {
             highScoreLabel.fontColor = .white
             scoreLabel.fontColor = .white
             timeLabel.fontColor = .white
+            totalTimeLabel.fontColor = .white
         } else {
             pauseOverlay.isHidden = true
             continueButton.isHidden = true
@@ -375,6 +394,7 @@ class GameScene: SKScene {
             highScoreLabel.fontColor = .gray
             scoreLabel.fontColor = .gray
             timeLabel.fontColor = .gray
+            totalTimeLabel.fontColor = .gray
         }
     }
     
@@ -385,12 +405,27 @@ class GameScene: SKScene {
         } else {
             volumeButton.run(SKAction.setTexture(SKTexture(imageNamed: "Icon_Volume_Off")))
         }
+        defaults.set(soundOn,forKey:"soundOn")
     }
     
     func timeOver() {
+        print("|| timeOver()")
+        print("|| OT: \(elapsedTime)")
+        elapsedTime += gamePlayTime
+        print("|| NT: \(elapsedTime)")
         timeOverLabel.isHidden = false
-        background.color = .red
+        background.color = .black
         defaults.set(elapsedTime, forKey: "elapsedTime")
+        defaults.set(blocksPopped, forKey: "blocksPopped")
+        
+        if last3Games.count < 3 {
+            last3Games.append(gameScore)
+        } else {
+            last3Games.insert(gameScore, at: 2)
+            last3Games.removeLast()
+        }
+        
+        defaults.set(last3Games,forKey:"last3Games")
         self.run(SKAction.wait(forDuration: 0.06),completion:{
             self.block_1.currentColor = "Grey"
             self.massUpdateColor()
@@ -450,10 +485,16 @@ class GameScene: SKScene {
     func restartGame() {
         if gameTime != 0 {
             gameTime = DEFAULT_GAMETIME
+            print("|| restartGame()")
+            print("|| OT: \(elapsedTime)")
+            elapsedTime += gamePlayTime
+            print("|| NT: \(elapsedTime)")
             gameScore = 0
             gamePlayTime = 0
             freeSecondPassed = false
             background.color = .white
+            defaults.set(elapsedTime, forKey: "elapsedTime")
+            defaults.set(blocksPopped, forKey: "blocksPopped")
             self.run(SKAction.wait(forDuration: 0.06),completion:{
                 self.block_1.currentColor = "Grey"
                 self.massUpdateColor()
@@ -512,11 +553,20 @@ class GameScene: SKScene {
                 })
             })
         } else {
+            if last3Games.count < 3 {
+                last3Games.append(gameScore)
+            } else {
+                last3Games.insert(gameScore, at: 2)
+                last3Games.removeLast()
+            }
+            
+            defaults.set(last3Games,forKey:"last3Games")
             gameTime = DEFAULT_GAMETIME
-            gamePlayTime = 0
             gameScore = 0
+            gamePlayTime = 0
             freeSecondPassed = false
             background.color = .white
+            defaults.set(blocksPopped, forKey: "blocksPopped")
             self.run(SKAction.wait(forDuration: 0.06),completion:{
                 self.block_1.selectNewColor()
                 self.run(SKAction.wait(forDuration: 0.06),completion:{
@@ -576,9 +626,21 @@ class GameScene: SKScene {
             self.lastUpdateTime = currentTime
         }
         
-        if currentTime - lastSecondCounted >= 1 && pauseOverlay.isHidden {
+        if currentTime - lastSecondCounted >= 1 && pauseOverlay.isHidden && timeOverLabel.isHidden {
             lastSecondCounted = currentTime
             gameTime -= 1
+            if soundOn && freeSecondPassed {
+                if gameTime > 15 {
+                    self.run(timeSound)
+                } else if gameTime > 10 {
+                    self.run(timeSound_Y)
+                } else if gameTime > 5 {
+                    self.run(timeSound_O)
+                } else {
+                    self.run(timeSound_R)
+                }
+            }
+            
             if gameTime <= 0 {
                 gameTime = 0
                 timeOver()
@@ -589,7 +651,50 @@ class GameScene: SKScene {
                 } else {
                     gamePlayTime += 1
                     if gameTime > 300 {
-                        gameTime = 300
+                        if gameTime > 5000 {
+                            self.addScore(150)
+                        } else if gameTime > 2500 {
+                            self.addScore(75)
+                        } else if gameTime > 2250 {
+                            self.addScore(67)
+                        } else if gameTime > 2000 {
+                            self.addScore(60)
+                        } else if gameTime > 1750 {
+                            self.addScore(53)
+                        } else if gameTime > 1500 {
+                            self.addScore(45)
+                        } else if gameTime > 1250 {
+                            self.addScore(37)
+                        } else if gameTime > 1200 {
+                            self.addScore(30)
+                        } else if gameTime > 1100 {
+                            self.addScore(27)
+                        } else if gameTime > 1000 {
+                            self.addScore(24)
+                        } else if gameTime > 900 {
+                            self.addScore(21)
+                        } else if gameTime > 800 {
+                            self.addScore(18)
+                        } else if gameTime > 700 {
+                            self.addScore(15)
+                        } else if gameTime > 600 {
+                            self.addScore(12)
+                        } else if gameTime > 500 {
+                            self.addScore(9)
+                        } else if gameTime > 400 {
+                            self.addScore(6)
+                        } else {
+                            self.addScore(3)
+                        }
+                        gameTime -= 2
+                        
+                        if gameTime > 300 {
+                            timeLabel.fontColor = .blue
+                        } else {
+                            timeLabel.fontColor = .gray
+                        }
+                    } else {
+                        timeLabel.fontColor = .gray
                     }
                 }
             }
@@ -600,7 +705,7 @@ class GameScene: SKScene {
         let secondsPassed:Int = gamePlayTime - (minutesPassed * 60) - (hoursPassed * 60 * 60)
         
         totalTimeLabel.text = "Total Time: \(hoursPassed)h \(minutesPassed)m \(secondsPassed)s"
-        timeLabel.text = "Time Left: \(gameTime)s"
+        timeLabel.text = "Time: \(gameTime)s"
         scoreLabel.text = "Score: \(gameScore) pts"
         highScoreLabel.text = "Highscore: \(highScore) pts"
         
@@ -658,6 +763,7 @@ class GameScene: SKScene {
     }
     
     func addTime(_ timeToAdd:Int) {
+        gameTime += timeToAdd
         let addedTimeLabel = SKLabelNode(text: "+\(timeToAdd)s")
         addedTimeLabel.fontSize = timeLabel.fontSize
         addedTimeLabel.fontName = timeLabel.fontName
@@ -672,6 +778,7 @@ class GameScene: SKScene {
     }
     
     func addScore(_ scoreToAdd:Int) {
+        gameScore += scoreToAdd
         let addedScoreLabel = SKLabelNode(text: "+\(scoreToAdd) pts")
         addedScoreLabel.fontSize = scoreLabel.fontSize
         addedScoreLabel.fontName = scoreLabel.fontName
