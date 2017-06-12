@@ -30,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7D0880DA1EEDD38800F393F5 /* timeSound_B.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = timeSound_B.m4a; sourceTree = "<group>"; };
 		7D1F122D1EE7A82100078441 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		7D1F122F1EE7C66E00078441 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		7D1F12311EE8272200078441 /* StatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
@@ -97,6 +98,7 @@
 				7D8B89A51EEC115C002BFC9E /* Icon240.png */,
 				7DB52F311EE8420900A2C526 /* popSound.m4a */,
 				7D8B899A1EEC0594002BFC9E /* popSound2.m4a */,
+				7D0880DA1EEDD38800F393F5 /* timeSound_B.m4a */,
 				7D8B899D1EEC086D002BFC9E /* timeSound.m4a */,
 				7D8B899F1EEC0B24002BFC9E /* timeSound_Y.m4a */,
 				7D8B89A11EEC0B24002BFC9E /* timeSound_O.m4a */,

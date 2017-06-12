@@ -29,8 +29,8 @@
                                     <constraint firstAttribute="height" constant="120" id="qfC-tf-UnG"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blocky Pop" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BCz-cr-UfY">
-                                <rect key="frame" x="99.5" y="308" width="175" height="51"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Whooshy Blocks" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BCz-cr-UfY">
+                                <rect key="frame" x="57.5" y="308" width="260" height="51"/>
                                 <fontDescription key="fontDescription" name="ChalkboardSE-Regular" family="Chalkboard SE" pointSize="36"/>
                                 <color key="textColor" red="0.67157757279999997" green="0.67157757279999997" blue="0.67157757279999997" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>

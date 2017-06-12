@@ -20,6 +20,7 @@ class GameScene: SKScene {
     var graphs = [String : GKGraph]()
     
     private var lastUpdateTime : TimeInterval = 0
+    var timeSound_B = SKAction.playSoundFileNamed("timeSound_B.m4a", waitForCompletion: false)
     var timeSound = SKAction.playSoundFileNamed("timeSound.m4a", waitForCompletion: false)
     var timeSound_Y = SKAction.playSoundFileNamed("timeSound_Y.m4a", waitForCompletion: false)
     var timeSound_O = SKAction.playSoundFileNamed("timeSound_O.m4a", waitForCompletion: false)
@@ -630,7 +631,9 @@ class GameScene: SKScene {
             lastSecondCounted = currentTime
             gameTime -= 1
             if soundOn && freeSecondPassed {
-                if gameTime > 15 {
+                if gameTime > 300 {
+                    self.run(timeSound_B)
+                } else if gameTime > 15 {
                     self.run(timeSound)
                 } else if gameTime > 10 {
                     self.run(timeSound_Y)
