@@ -16,32 +16,24 @@ class GameViewController: UIViewController {
         
         // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
         // including entities and graphs.
-        if let scene = GKScene(fileNamed: "GameScene") {
-            // Get the SKScene from the loaded GKScene
-            if let sceneNode = scene.rootNode as! GameScene? {
-                var size = sceneNode.size
-                
-                // Copy gameplay related content over to the scene
-                sceneNode.entities = scene.entities
-                sceneNode.graphs = scene.graphs
-                
-                // Set the scale mode to scale to fit the window
-                sceneNode.scaleMode = .aspectFit
-                
-                // Present the scene
-                if let view = self.view as! SKView? {
-                    let newWidth = view.bounds.size.width / view.bounds.height * size.height
-                    if newWidth > size.width {
-                        size.width = newWidth
-                        sceneNode.size = size
-                    }
-                    view.presentScene(sceneNode)
-                    
-                    view.ignoresSiblingOrder = false
-                    
-                    view.showsFPS = false
-                    view.showsNodeCount = false
+        if let scene = GameScene(fileNamed: "GameScene") {
+            // Set the scale mode to scale to fit the window
+            scene.scaleMode = .aspectFit
+            var size = scene.size
+            
+            // Present the scene
+            if let view = self.view as! SKView? {
+                let newWidth = view.bounds.size.width / view.bounds.height * size.height
+                if newWidth > size.width {
+                    size.width = newWidth
+                    scene.size = size
                 }
+                view.presentScene(scene)
+                
+                view.ignoresSiblingOrder = false
+                
+                view.showsFPS = false
+                view.showsNodeCount = false
             }
         }
     }

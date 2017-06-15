@@ -17,9 +17,6 @@ var last3Games = [Int]()
 var blocksPopped = 0
 
 class GameScene: SKScene {
-    var entities = [GKEntity]()
-    var graphs = [String : GKGraph]()
-    
     private var lastUpdateTime : TimeInterval = 0
     var timeSound_B = SKAction.playSoundFileNamed("timeSound_B.m4a", waitForCompletion: false)
     var timeSound = SKAction.playSoundFileNamed("timeSound.m4a", waitForCompletion: false)
@@ -760,12 +757,6 @@ class GameScene: SKScene {
             block_34.selectNewColor()
             block_35.selectNewColor()
             block_36.selectNewColor()
-        }
-        
-        let dt = currentTime - self.lastUpdateTime
-        
-        for entity in self.entities {
-            entity.update(deltaTime: dt)
         }
         
         self.lastUpdateTime = currentTime

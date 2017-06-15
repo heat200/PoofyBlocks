@@ -24,8 +24,8 @@
 		7D8B89A31EEC0B33002BFC9E /* timeSound_O.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7D8B89A11EEC0B24002BFC9E /* timeSound_O.m4a */; };
 		7D8B89A41EEC0B33002BFC9E /* timeSound_R.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7D8B89A01EEC0B24002BFC9E /* timeSound_R.m4a */; };
 		7D8B89A61EEC115C002BFC9E /* Icon240.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D8B89A51EEC115C002BFC9E /* Icon240.png */; };
+		7D9130301EF32AB20081D000 /* popSound2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7D8B899A1EEC0594002BFC9E /* popSound2.m4a */; };
 		7D9F20CC1EF1D38A00FFEEF0 /* GKTrafficHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9F20CB1EF1D38A00FFEEF0 /* GKTrafficHandler.swift */; };
-		7DB52F321EE84D3300A2C526 /* popSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7DB52F311EE8420900A2C526 /* popSound.m4a */; };
 		7DDB1E511EF25A0900975C9E /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DDB1E501EF25A0900975C9E /* GameKit.framework */; };
 		7DDB1E521EF2663A00975C9E /* timeSound_B.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7D0880DA1EEDD38800F393F5 /* timeSound_B.m4a */; };
 /* End PBXBuildFile section */
@@ -194,11 +194,11 @@
 				7D8B89A31EEC0B33002BFC9E /* timeSound_O.m4a in Resources */,
 				7D8409461EE0BB2D0041E4DA /* Assets.xcassets in Resources */,
 				7D8409491EE0BB2D0041E4DA /* LaunchScreen.storyboard in Resources */,
-				7DB52F321EE84D3300A2C526 /* popSound.m4a in Resources */,
 				7D8B89A41EEC0B33002BFC9E /* timeSound_R.m4a in Resources */,
 				7DDB1E521EF2663A00975C9E /* timeSound_B.m4a in Resources */,
 				7D8B89A61EEC115C002BFC9E /* Icon240.png in Resources */,
 				7D8B899E1EEC0879002BFC9E /* timeSound.m4a in Resources */,
+				7D9130301EF32AB20081D000 /* popSound2.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,7 +344,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = N4MWNVQDSJ;
 				INFOPLIST_FILE = "Pop Blocks/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Mazariegos.PopBlocks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -358,7 +358,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = N4MWNVQDSJ;
 				INFOPLIST_FILE = "Pop Blocks/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Mazariegos.PopBlocks;
 				PRODUCT_NAME = "$(TARGET_NAME)";

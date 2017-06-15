@@ -25,6 +25,14 @@ class GKTrafficHandler:NSObject, GKGameCenterControllerDelegate {
                     _enableGameCenter = true
                     playerName = localPlayer.alias!
                     
+                    //Works without the following bit but have it just incase I need the default identifier later on
+                    localPlayer.loadDefaultLeaderboardIdentifier(completionHandler: { (leaderboardIdentifier, error) in
+                        if error != nil {
+                            print("#DESTROYED BY SELF")
+                        } else {
+                            DEFAULT_LB = leaderboardIdentifier!
+                        }
+                    })
                 } else {
                     _enableGameCenter = false
                 }

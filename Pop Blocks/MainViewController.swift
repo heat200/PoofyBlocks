@@ -16,6 +16,7 @@ var attemptedAuth = false
 var appDelegate:AppDelegate!
 var GK_TRAFFIC_HANDLER:GKTrafficHandler!
 var playerName = ""
+var DEFAULT_LB = ""
 var LB_ID_SCORE = "PoofyBlocks_Highest_Score"
 var LB_ID_TIME = "PoofyBlocks_Longest_Time"
 
