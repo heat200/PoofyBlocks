@@ -7,13 +7,29 @@
 //
 
 import UIKit
+import GameKit
 
 let defaults = UserDefaults.standard
+var _enableGameCenter = true
+var _authVC:UIViewController?
+var attemptedAuth = false
+var appDelegate:AppDelegate!
+var GK_TRAFFIC_HANDLER:GKTrafficHandler!
+var playerName = ""
+var LB_ID_SCORE = "PoofyBlocks_Highest_Score"
+var LB_ID_TIME = "PoofyBlocks_Longest_Time"
 
 class MainViewController: UIViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        if GK_TRAFFIC_HANDLER == nil {
+            GK_TRAFFIC_HANDLER = GKTrafficHandler()
+        }
+        
+        if !attemptedAuth {
+            attemptedAuth = true
+            GK_TRAFFIC_HANDLER.authLocalPlayer()
+        }
     }
 
     override var shouldAutorotate: Bool {
@@ -26,6 +42,16 @@ class MainViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    @IBAction func openLB() {
+        GK_TRAFFIC_HANDLER.submitHighScores()
+        
+        let gcVC = GKGameCenterViewController()
+        gcVC.gameCenterDelegate = GK_TRAFFIC_HANDLER
+        gcVC.viewState = .leaderboards
+        gcVC.leaderboardIdentifier = LB_ID_SCORE
+        self.present(gcVC, animated: true, completion: nil)
     }
 
     override var prefersStatusBarHidden: Bool {

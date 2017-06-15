@@ -46,6 +46,12 @@ class GameViewController: UIViewController {
         }
     }
     
+    func LoginMessage() {
+        if _authVC != nil {
+            self.present(_authVC!, animated: false, completion: {})
+        }
+    }
+    
     override var shouldAutorotate: Bool {
         return true
     }

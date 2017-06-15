@@ -7,9 +7,9 @@
 //
 
 import UIKit
+import GameKit
 
 class LeadersViewController: UIViewController {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }

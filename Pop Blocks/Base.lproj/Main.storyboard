@@ -174,28 +174,18 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Block_Grey" translatesAutoresizingMaskIntoConstraints="NO" id="kLG-xX-IxP">
                                 <rect key="frame" x="331" y="653" width="83" height="83"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DaL-fg-0gM">
-                                <rect key="frame" x="107" y="312" width="200" height="0.0"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DaL-fg-0gM">
+                                <rect key="frame" x="107" y="304" width="200" height="60"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                                 <state key="normal" title="Leaders" backgroundImage="Button_Background">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="deviceRGB"/>
-                                </state>
-                                <connections>
-                                    <segue destination="XMe-CB-twL" kind="show" id="0ge-RH-OhJ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQk-mz-hEF">
-                                <rect key="frame" x="107" y="312" width="200" height="60"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
-                                <state key="normal" title="Stats" backgroundImage="Button_Background">
                                     <color key="titleColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </state>
                                 <connections>
-                                    <segue destination="nxp-gD-TLi" kind="show" id="JoB-Ti-gYH"/>
+                                    <action selector="openLB" destination="8fv-zw-pVr" eventType="touchUpInside" id="HWY-0C-DhI"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDr-DV-i99">
-                                <rect key="frame" x="107" y="402" width="200" height="60"/>
+                                <rect key="frame" x="107" y="468" width="200" height="60"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                                 <state key="normal" title="Credits" backgroundImage="Button_Background">
                                     <color key="titleColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -246,6 +236,16 @@
                                     <constraint firstAttribute="height" constant="75" id="q7Z-xM-Ybu"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQk-mz-hEF">
+                                <rect key="frame" x="107" y="386" width="200" height="60"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                <state key="normal" title="Stats" backgroundImage="Button_Background">
+                                    <color key="titleColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </state>
+                                <connections>
+                                    <segue destination="nxp-gD-TLi" kind="show" id="JoB-Ti-gYH"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -276,7 +276,8 @@
                             <constraint firstItem="8Ow-IQ-JyW" firstAttribute="width" secondItem="iEL-0m-IkV" secondAttribute="width" id="8P0-XZ-2jd"/>
                             <constraint firstItem="7Ws-8l-Kuv" firstAttribute="height" secondItem="iEL-0m-IkV" secondAttribute="height" id="8hc-uF-auz"/>
                             <constraint firstItem="5IX-Ho-oWN" firstAttribute="centerX" secondItem="bnm-Tj-vI0" secondAttribute="centerX" id="8kX-K5-Ajk"/>
-                            <constraint firstItem="vQk-mz-hEF" firstAttribute="top" secondItem="DaL-fg-0gM" secondAttribute="top" id="9WJ-y3-ZZj"/>
+                            <constraint firstItem="vQk-mz-hEF" firstAttribute="top" secondItem="DaL-fg-0gM" secondAttribute="bottom" constant="22" id="9WJ-y3-ZZj"/>
+                            <constraint firstItem="fDr-DV-i99" firstAttribute="top" secondItem="vQk-mz-hEF" secondAttribute="bottom" constant="22" id="9g5-4K-PhQ"/>
                             <constraint firstItem="lB4-Es-xBd" firstAttribute="centerY" secondItem="Rsz-zZ-U4J" secondAttribute="centerY" id="ACj-HR-cmU"/>
                             <constraint firstItem="A96-U7-TQV" firstAttribute="centerX" secondItem="8Ow-IQ-JyW" secondAttribute="centerX" id="AII-7E-u4H"/>
                             <constraint firstItem="kLG-xX-IxP" firstAttribute="centerY" secondItem="lXw-cT-VlT" secondAttribute="centerY" id="ALE-af-s8h"/>
@@ -322,7 +323,6 @@
                             <constraint firstItem="Ln4-JO-V9E" firstAttribute="centerX" secondItem="bnm-Tj-vI0" secondAttribute="centerX" id="MNO-0M-1Le"/>
                             <constraint firstItem="50e-eL-UuX" firstAttribute="height" secondItem="iEL-0m-IkV" secondAttribute="height" id="MhV-La-LGy"/>
                             <constraint firstItem="8aN-ZS-2Dx" firstAttribute="width" secondItem="iEL-0m-IkV" secondAttribute="width" id="Mwo-ZC-VtH"/>
-                            <constraint firstItem="fDr-DV-i99" firstAttribute="top" secondItem="vQk-mz-hEF" secondAttribute="top" constant="90" id="N5w-12-v5N"/>
                             <constraint firstItem="2zu-of-g5u" firstAttribute="height" secondItem="iEL-0m-IkV" secondAttribute="height" id="NLL-Vo-vUP"/>
                             <constraint firstItem="HIk-eF-TDl" firstAttribute="centerX" secondItem="8Yl-1l-14Y" secondAttribute="centerX" id="NNF-lU-byE"/>
                             <constraint firstItem="cJE-WC-b5h" firstAttribute="centerY" secondItem="G46-P5-FTi" secondAttribute="centerY" id="Ngn-tS-kX8"/>
@@ -380,7 +380,7 @@
                             <constraint firstItem="8aN-ZS-2Dx" firstAttribute="height" secondItem="iEL-0m-IkV" secondAttribute="height" id="cHe-gs-o1l"/>
                             <constraint firstItem="A96-U7-TQV" firstAttribute="height" secondItem="iEL-0m-IkV" secondAttribute="height" id="cWp-N6-eOy"/>
                             <constraint firstItem="XRE-Na-p2w" firstAttribute="height" secondItem="iEL-0m-IkV" secondAttribute="height" id="dJB-GU-GvQ"/>
-                            <constraint firstItem="DaL-fg-0gM" firstAttribute="height" secondItem="yyN-tu-H6x" secondAttribute="height" constant="-60" id="dT8-ME-jtX"/>
+                            <constraint firstItem="DaL-fg-0gM" firstAttribute="height" secondItem="yyN-tu-H6x" secondAttribute="height" id="dT8-ME-jtX"/>
                             <constraint firstItem="lXh-5H-0rM" firstAttribute="width" secondItem="iEL-0m-IkV" secondAttribute="width" id="eGo-Gl-874"/>
                             <constraint firstItem="cJE-WC-b5h" firstAttribute="height" secondItem="iEL-0m-IkV" secondAttribute="height" id="eJf-6U-I8M"/>
                             <constraint firstItem="CbH-ME-6RK" firstAttribute="width" secondItem="iEL-0m-IkV" secondAttribute="width" id="eM0-Ko-GZA"/>
@@ -390,7 +390,7 @@
                             <constraint firstItem="ESs-tv-mQ9" firstAttribute="height" secondItem="iEL-0m-IkV" secondAttribute="height" id="eng-lr-D4n"/>
                             <constraint firstItem="rcD-RB-Iz3" firstAttribute="centerY" secondItem="qS8-Qr-1Pr" secondAttribute="centerY" id="fId-SS-0Mu"/>
                             <constraint firstItem="UIm-k5-udB" firstAttribute="height" secondItem="iEL-0m-IkV" secondAttribute="height" id="gOO-CL-ret"/>
-                            <constraint firstItem="DaL-fg-0gM" firstAttribute="top" secondItem="yyN-tu-H6x" secondAttribute="top" constant="90" id="gbP-CT-Ppc"/>
+                            <constraint firstItem="DaL-fg-0gM" firstAttribute="top" secondItem="yyN-tu-H6x" secondAttribute="bottom" constant="22" id="grF-JU-Dq8"/>
                             <constraint firstItem="LN5-8g-kLc" firstAttribute="centerX" secondItem="HIk-eF-TDl" secondAttribute="centerX" id="hHD-1n-V1R"/>
                             <constraint firstItem="HIk-eF-TDl" firstAttribute="width" secondItem="iEL-0m-IkV" secondAttribute="width" id="hKD-9I-GHd"/>
                             <constraint firstItem="tFA-cj-eNO" firstAttribute="centerY" secondItem="iEL-0m-IkV" secondAttribute="centerY" id="hjl-UC-dcJ"/>

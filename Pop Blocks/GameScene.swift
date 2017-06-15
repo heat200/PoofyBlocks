@@ -10,6 +10,7 @@ import SpriteKit
 import GameplayKit
 
 var highScore = 0
+var longestGame = 0
 var elapsedTime = 0
 var soundOn = true
 var last3Games = [Int]()
@@ -715,6 +716,11 @@ class GameScene: SKScene {
         if gameScore > highScore {
             highScore = gameScore
             defaults.set(highScore, forKey: "highScore")
+        }
+        
+        if gamePlayTime > longestGame {
+            longestGame = gamePlayTime
+            defaults.set(longestGame, forKey: "longestGame")
         }
         
         if timeOverLabel.isHidden && pauseOverlay.isHidden {

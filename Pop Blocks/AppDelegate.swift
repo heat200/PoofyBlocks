@@ -10,14 +10,16 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
-
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         if let hiScore = defaults.object(forKey: "highScore") {
             highScore = hiScore as! Int
+        }
+        
+        if let timeHiScore = defaults.object(forKey: "longestGame") {
+            longestGame = timeHiScore as! Int
         }
         
         if let elapTime = defaults.object(forKey: "elapsedTime") {
