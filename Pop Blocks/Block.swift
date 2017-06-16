@@ -18,17 +18,18 @@ class Block:SKSpriteNode {
     var trueNeighbors = [Block]()
     
     func popAnimation(_ pos:Double) {
-        self.run(SKAction.wait(forDuration: 0.08 * pos), completion: {
+        self.run(SKAction.wait(forDuration: 0.07 * pos), completion: {
             let nBlock = SKSpriteNode(imageNamed: "Block_\(self.currentColor)")
             nBlock.size = self.size
             nBlock.position = self.position
+            nBlock.alpha = 0.9
             self.parent?.addChild(nBlock)
             
             if soundOn {
                 self.run(self.popSound)
             }
             
-            let newAction = SKAction.group([SKAction.resize(toWidth: self.size.width * 2.5, height: self.size.height * 2.5, duration: 0.17),SKAction.fadeAlpha(to: 0, duration: 0.17)])
+            let newAction = SKAction.group([SKAction.resize(toWidth: self.size.width * 2.5, height: self.size.height * 2.5, duration: 0.7),SKAction.fadeAlpha(to: 0, duration: 0.7)])
             nBlock.run(newAction, completion: {
                 nBlock.removeFromParent()
             })
