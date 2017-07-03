@@ -12,9 +12,22 @@ import GameplayKit
 var highScore = 0
 var longestGame = 0
 var elapsedTime = 0
+
+var highScore_Shuffle = 0
+var longestGame_Shuffle = 0
+
+var highScore_Spin = 0
+var longestGame_Spin = 0
+
+var highScore_Flip = 0
+var longestGame_Flip = 0
+
+var highScore_Fragile = 0
+var longestGame_Fragile = 0
+
 var soundOn = true
-var last3Games = [Int]()
 var blocksPopped = 0
+var gameMode = "Normal"
 
 class GameScene: SKScene {
     private var lastUpdateTime : TimeInterval = 0
@@ -23,7 +36,19 @@ class GameScene: SKScene {
     var timeSound_Y = SKAction.playSoundFileNamed("timeSound_Y.m4a", waitForCompletion: false)
     var timeSound_O = SKAction.playSoundFileNamed("timeSound_O.m4a", waitForCompletion: false)
     var timeSound_R = SKAction.playSoundFileNamed("timeSound_R.m4a", waitForCompletion: false)
+    var blockSound = SKAction.playSoundFileNamed("popSound.m4a", waitForCompletion: false)
+    var blockSound2 = SKAction.playSoundFileNamed("blockScale.m4a", waitForCompletion: false)
+    var blockSound3 = SKAction.playSoundFileNamed("buttonBack.m4a", waitForCompletion: false)
+    var buttonSound = SKAction.playSoundFileNamed("buttonForward.m4a", waitForCompletion: false)
+    var specialSound = SKAction.playSoundFileNamed("shuffleSound.m4a", waitForCompletion: false)
+    var specialSound2 = SKAction.playSoundFileNamed("shuffleSound2.m4a", waitForCompletion: false)
     var blockArray = [Block]()
+    var blockList = [Block]()
+    var blockLayers = [[Block](),[Block](),[Block]()]
+    var firstMoveDone = false
+    var randLapse = 1
+    var randMod = 0
+    var hintLapse = 1
     var freeSecondPassed = false
     let DEFAULT_GAMETIME = 61
     var gameTime = 10
@@ -78,6 +103,7 @@ class GameScene: SKScene {
     var block_34:Block!
     var block_35:Block!
     var block_36:Block!
+    var blockHolder:SKSpriteNode!
     
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
@@ -94,42 +120,43 @@ class GameScene: SKScene {
         highScoreLabel = self.childNode(withName: "highScoreLabel") as! SKLabelNode
         scoreLabel = self.childNode(withName: "scoreLabel") as! SKLabelNode
         background = self.childNode(withName: "background") as! SKSpriteNode
-        block_1 = self.childNode(withName: "block_1") as! Block
-        block_2 = self.childNode(withName: "block_2") as! Block
-        block_3 = self.childNode(withName: "block_3") as! Block
-        block_4 = self.childNode(withName: "block_4") as! Block
-        block_5 = self.childNode(withName: "block_5") as! Block
-        block_6 = self.childNode(withName: "block_6") as! Block
-        block_7 = self.childNode(withName: "block_7") as! Block
-        block_8 = self.childNode(withName: "block_8") as! Block
-        block_9 = self.childNode(withName: "block_9") as! Block
-        block_10 = self.childNode(withName: "block_10") as! Block
-        block_11 = self.childNode(withName: "block_11") as! Block
-        block_12 = self.childNode(withName: "block_12") as! Block
-        block_13 = self.childNode(withName: "block_13") as! Block
-        block_14 = self.childNode(withName: "block_14") as! Block
-        block_15 = self.childNode(withName: "block_15") as! Block
-        block_16 = self.childNode(withName: "block_16") as! Block
-        block_17 = self.childNode(withName: "block_17") as! Block
-        block_18 = self.childNode(withName: "block_18") as! Block
-        block_19 = self.childNode(withName: "block_19") as! Block
-        block_20 = self.childNode(withName: "block_20") as! Block
-        block_21 = self.childNode(withName: "block_21") as! Block
-        block_22 = self.childNode(withName: "block_22") as! Block
-        block_23 = self.childNode(withName: "block_23") as! Block
-        block_24 = self.childNode(withName: "block_24") as! Block
-        block_25 = self.childNode(withName: "block_25") as! Block
-        block_26 = self.childNode(withName: "block_26") as! Block
-        block_27 = self.childNode(withName: "block_27") as! Block
-        block_28 = self.childNode(withName: "block_28") as! Block
-        block_29 = self.childNode(withName: "block_29") as! Block
-        block_30 = self.childNode(withName: "block_30") as! Block
-        block_31 = self.childNode(withName: "block_31") as! Block
-        block_32 = self.childNode(withName: "block_32") as! Block
-        block_33 = self.childNode(withName: "block_33") as! Block
-        block_34 = self.childNode(withName: "block_34") as! Block
-        block_35 = self.childNode(withName: "block_35") as! Block
-        block_36 = self.childNode(withName: "block_36") as! Block
+        blockHolder = self.childNode(withName: "blockHolder") as! SKSpriteNode
+        block_1 = blockHolder.childNode(withName: "block_1") as! Block
+        block_2 = blockHolder.childNode(withName: "block_2") as! Block
+        block_3 = blockHolder.childNode(withName: "block_3") as! Block
+        block_4 = blockHolder.childNode(withName: "block_4") as! Block
+        block_5 = blockHolder.childNode(withName: "block_5") as! Block
+        block_6 = blockHolder.childNode(withName: "block_6") as! Block
+        block_7 = blockHolder.childNode(withName: "block_7") as! Block
+        block_8 = blockHolder.childNode(withName: "block_8") as! Block
+        block_9 = blockHolder.childNode(withName: "block_9") as! Block
+        block_10 = blockHolder.childNode(withName: "block_10") as! Block
+        block_11 = blockHolder.childNode(withName: "block_11") as! Block
+        block_12 = blockHolder.childNode(withName: "block_12") as! Block
+        block_13 = blockHolder.childNode(withName: "block_13") as! Block
+        block_14 = blockHolder.childNode(withName: "block_14") as! Block
+        block_15 = blockHolder.childNode(withName: "block_15") as! Block
+        block_16 = blockHolder.childNode(withName: "block_16") as! Block
+        block_17 = blockHolder.childNode(withName: "block_17") as! Block
+        block_18 = blockHolder.childNode(withName: "block_18") as! Block
+        block_19 = blockHolder.childNode(withName: "block_19") as! Block
+        block_20 = blockHolder.childNode(withName: "block_20") as! Block
+        block_21 = blockHolder.childNode(withName: "block_21") as! Block
+        block_22 = blockHolder.childNode(withName: "block_22") as! Block
+        block_23 = blockHolder.childNode(withName: "block_23") as! Block
+        block_24 = blockHolder.childNode(withName: "block_24") as! Block
+        block_25 = blockHolder.childNode(withName: "block_25") as! Block
+        block_26 = blockHolder.childNode(withName: "block_26") as! Block
+        block_27 = blockHolder.childNode(withName: "block_27") as! Block
+        block_28 = blockHolder.childNode(withName: "block_28") as! Block
+        block_29 = blockHolder.childNode(withName: "block_29") as! Block
+        block_30 = blockHolder.childNode(withName: "block_30") as! Block
+        block_31 = blockHolder.childNode(withName: "block_31") as! Block
+        block_32 = blockHolder.childNode(withName: "block_32") as! Block
+        block_33 = blockHolder.childNode(withName: "block_33") as! Block
+        block_34 = blockHolder.childNode(withName: "block_34") as! Block
+        block_35 = blockHolder.childNode(withName: "block_35") as! Block
+        block_36 = blockHolder.childNode(withName: "block_36") as! Block
         pauseOverlay.isHidden = true
         continueButton.isHidden = true
         restartButton.isHidden = true
@@ -176,34 +203,75 @@ class GameScene: SKScene {
         block_36.setUpAcceptedBlocks()
         toggleVolume()
         toggleVolume()
+        
+        blockList.append(block_1)
+        blockList.append(block_2)
+        blockList.append(block_3)
+        blockList.append(block_4)
+        blockList.append(block_5)
+        blockList.append(block_6)
+        blockList.append(block_7)
+        blockList.append(block_8)
+        blockList.append(block_9)
+        blockList.append(block_10)
+        blockList.append(block_11)
+        blockList.append(block_12)
+        blockList.append(block_13)
+        blockList.append(block_14)
+        blockList.append(block_15)
+        blockList.append(block_16)
+        blockList.append(block_17)
+        blockList.append(block_18)
+        blockList.append(block_19)
+        blockList.append(block_20)
+        blockList.append(block_21)
+        blockList.append(block_22)
+        blockList.append(block_23)
+        blockList.append(block_24)
+        blockList.append(block_25)
+        blockList.append(block_26)
+        blockList.append(block_27)
+        blockList.append(block_28)
+        blockList.append(block_29)
+        blockList.append(block_30)
+        blockList.append(block_31)
+        blockList.append(block_32)
+        blockList.append(block_33)
+        blockList.append(block_34)
+        blockList.append(block_35)
+        blockList.append(block_36)
+        
+        setUpLayers()
+        print("GM: \(gameMode)")
     }
     
-    func touchDown(atPoint pos : CGPoint) {
+    func touchDown(atPoint pos:CGPoint) {
         let node = self.atPoint(pos)
         
         if node == pauseButton || node == continueButton || node.parent == continueButton {
+            if soundOn {
+                self.run(blockSound3)
+            }
             self.togglePause()
         } else if node == restartButton || node.parent == restartButton {
+            if soundOn {
+                self.run(blockSound3)
+            }
             self.restartGame()
             self.togglePause()
         } else if node == menuButton || node.parent == menuButton {
-            if last3Games.count < 3 {
-                last3Games.append(gameScore)
-            } else {
-                last3Games.insert(gameScore, at: 2)
-                last3Games.removeLast()
+            if soundOn {
+                self.run(blockSound3)
             }
-            
-            print("|| touchDown()")
-            print("|| OT: \(elapsedTime)")
             elapsedTime += gamePlayTime
-            print("|| NT: \(elapsedTime)")
-            defaults.set(last3Games,forKey:"last3Games")
             defaults.set(elapsedTime, forKey: "elapsedTime")
             defaults.set(blocksPopped, forKey: "blocksPopped")
             self.view?.window?.rootViewController?.dismiss(animated: true, completion: {})
         } else if node == volumeButton {
             self.toggleVolume()
+            if soundOn {
+                self.run(blockSound3)
+            }
         } else {
             if timeOverLabel.isHidden {
                 self.safeRemoveBlocks()
@@ -318,8 +386,10 @@ class GameScene: SKScene {
                         } else {
                             if blockArray[x].currentColor != "Rainbow" {
                                 blocksAreGood = false
+                                /*
                                 print("Block #\(blockArray[x].blockID()) couldn't find neighbors :(")
                                 print("Block #s \(blockArray[x - 1].blockID()) & \(blockArray[x + 1].blockID())")
+                                 */
                             }
                         }
                     } else {
@@ -353,11 +423,13 @@ class GameScene: SKScene {
                 self.safeRemoveBlocks()
                 
                 let scoreToAdd = (totalBlocks + (scoreBlockCount * 3)) * (totalBlocks - 2) //Ranges from 3-4896
-                
                 let timeToAdd:Int = timeBlockCount * totalBlocks
                 
                 self.addTime(timeToAdd)
                 self.addScore(scoreToAdd)
+                if !firstMoveDone {
+                    firstMoveDone = true
+                }
             }
         } else {
             self.safeRemoveBlocks()
@@ -371,6 +443,19 @@ class GameScene: SKScene {
             x += 1
         }
         blockArray.removeAll()
+    }
+    
+    func fragilize(_ block:Block) {
+        if block.xScale >= 0.2 {
+            var newScale = block.xScale - 0.2
+            if newScale < 0 {
+                newScale = 0
+            }
+            block.run(SKAction.scale(to: newScale, duration: 0.5))
+            if soundOn {
+                self.run(blockSound)
+            }
+        }
     }
     
     func togglePause() {
@@ -408,23 +493,12 @@ class GameScene: SKScene {
     }
     
     func timeOver() {
-        print("|| timeOver()")
-        print("|| OT: \(elapsedTime)")
         elapsedTime += gamePlayTime
-        print("|| NT: \(elapsedTime)")
         timeOverLabel.isHidden = false
         background.color = .black
         defaults.set(elapsedTime, forKey: "elapsedTime")
         defaults.set(blocksPopped, forKey: "blocksPopped")
         
-        if last3Games.count < 3 {
-            last3Games.append(gameScore)
-        } else {
-            last3Games.insert(gameScore, at: 2)
-            last3Games.removeLast()
-        }
-        
-        defaults.set(last3Games,forKey:"last3Games")
         self.run(SKAction.wait(forDuration: 0.06),completion:{
             self.block_1.currentColor = "Grey"
             self.massUpdateColor()
@@ -484,13 +558,12 @@ class GameScene: SKScene {
     func restartGame() {
         if gameTime != 0 {
             gameTime = DEFAULT_GAMETIME
-            print("|| restartGame()")
-            print("|| OT: \(elapsedTime)")
             elapsedTime += gamePlayTime
-            print("|| NT: \(elapsedTime)")
             gameScore = 0
             gamePlayTime = 0
+            randMod = 0
             freeSecondPassed = false
+            firstMoveDone = false
             background.color = .white
             defaults.set(elapsedTime, forKey: "elapsedTime")
             defaults.set(blocksPopped, forKey: "blocksPopped")
@@ -552,19 +625,15 @@ class GameScene: SKScene {
                 })
             })
         } else {
-            if last3Games.count < 3 {
-                last3Games.append(gameScore)
-            } else {
-                last3Games.insert(gameScore, at: 2)
-                last3Games.removeLast()
-            }
-            
-            defaults.set(last3Games,forKey:"last3Games")
             gameTime = DEFAULT_GAMETIME
+            elapsedTime += gamePlayTime
             gameScore = 0
             gamePlayTime = 0
+            randMod = 0
             freeSecondPassed = false
+            firstMoveDone = false
             background.color = .white
+            defaults.set(elapsedTime, forKey: "elapsedTime")
             defaults.set(blocksPopped, forKey: "blocksPopped")
             self.run(SKAction.wait(forDuration: 0.06),completion:{
                 self.block_1.selectNewColor()
@@ -627,19 +696,8 @@ class GameScene: SKScene {
         
         if currentTime - lastSecondCounted >= 1 && pauseOverlay.isHidden && timeOverLabel.isHidden {
             lastSecondCounted = currentTime
-            gameTime -= 1
-            if soundOn && freeSecondPassed {
-                if gameTime > 300 {
-                    self.run(timeSound_B)
-                } else if gameTime > 15 {
-                    self.run(timeSound)
-                } else if gameTime > 10 {
-                    self.run(timeSound_Y)
-                } else if gameTime > 5 {
-                    self.run(timeSound_O)
-                } else {
-                    self.run(timeSound_R)
-                }
+            if gameMode != "Fragile" {
+                gameTime -= 1
             }
             
             if gameTime <= 0 {
@@ -650,6 +708,60 @@ class GameScene: SKScene {
                 if gameTime == 60 && !freeSecondPassed {
                     freeSecondPassed = true
                 } else {
+                    if randLapse <= 0 {
+                        if gameMode == "Shuffle" && blockArray.count == 0 {
+                            randLapse = Int(arc4random_uniform(3) + 1)
+                            shuffleLayers()
+                        } else if gameMode == "Flip" && blockArray.count == 0 {
+                            randLapse = Int(arc4random_uniform(3) + 1)
+                            let rand = Int(arc4random_uniform(2) + 1)
+                            if rand == 1 {
+                                blockHolder.run(SKAction.scaleX(to: blockHolder.xScale * -1, duration: 0.5))
+                            } else {
+                                blockHolder.run(SKAction.scaleY(to: blockHolder.yScale * -1, duration: 0.5))
+                            }
+                            
+                            if soundOn {
+                                self.run(specialSound)
+                            }
+                        } else if gameMode == "Spin" && blockArray.count == 0 {
+                            randLapse = Int(arc4random_uniform(3) + 1)
+                            let rand = Int(arc4random_uniform(2) + 1)
+                            let direction = Int(arc4random_uniform(2) + 1)
+                            if direction == 1 {
+                                blockHolder.run(SKAction.rotate(byAngle: CGFloat(Double.pi * Double(rand)), duration: 0.5))
+                            } else {
+                                blockHolder.run(SKAction.rotate(byAngle: CGFloat(Double.pi * Double(-rand)), duration: 0.5))
+                            }
+                            
+                            if soundOn {
+                                self.run(specialSound2)
+                            }
+                        } else if gameMode == "Fragile" {
+                            randLapse = Int(arc4random_uniform(5) + 1) //1-5s between each round
+                            let rand = Int(arc4random_uniform(3)) //+0 to 2 fragilized blocks each round
+                            randMod += rand
+                            var x = 0
+                            while x < randMod {
+                                fragilize(selectRandomBlock())
+                                x += 1
+                            }
+                            
+                            checkSpecialLoss()
+                        }
+                    }
+                    randLapse -= 1
+                    
+                    if hintLapse >= 2 {
+                        hintLapse = 0
+                        if gameMode == "Normal" {
+                            if !firstMoveDone {
+                                highlightFirstMove(0)
+                            }
+                        }
+                    }
+                    
+                    hintLapse += 1
                     gamePlayTime += 1
                     if gameTime > 300 {
                         if gameTime > 5000 {
@@ -706,75 +818,52 @@ class GameScene: SKScene {
         let secondsPassed:Int = gamePlayTime - (minutesPassed * 60) - (hoursPassed * 60 * 60)
         
         totalTimeLabel.text = "Total Time: \(hoursPassed)h \(minutesPassed)m \(secondsPassed)s"
-        timeLabel.text = "Time: \(gameTime)s"
+        if gameMode != "Fragile" {
+            timeLabel.text = "Time: \(gameTime)s"
+        } else {
+            timeLabel.text = "Time: ∞"
+        }
         scoreLabel.text = "Score: \(gameScore) pts"
-        highScoreLabel.text = "Highscore: \(highScore) pts"
         
-        if gameScore > highScore {
-            highScore = gameScore
-            defaults.set(highScore, forKey: "highScore")
+        if gameMode == "Normal" {
+            highScoreLabel.text = "Highscore: \(highScore) pts"
+        } else if gameMode == "Shuffle" {
+            highScoreLabel.text = "Highscore: \(highScore_Shuffle) pts"
+        } else if gameMode == "Spin" {
+            highScoreLabel.text = "Highscore: \(highScore_Spin) pts"
+        } else if gameMode == "Flip" {
+            highScoreLabel.text = "Highscore: \(highScore_Flip) pts"
+        } else if gameMode == "Fragile" {
+            highScoreLabel.text = "Highscore: \(highScore_Fragile) pts"
         }
         
-        if gamePlayTime > longestGame {
-            longestGame = gamePlayTime
-            defaults.set(longestGame, forKey: "longestGame")
-        }
+        saveHighscores()
         
         if timeOverLabel.isHidden && pauseOverlay.isHidden {
-            block_1.selectNewColor()
-            block_2.selectNewColor()
-            block_3.selectNewColor()
-            block_4.selectNewColor()
-            block_5.selectNewColor()
-            block_6.selectNewColor()
-            block_7.selectNewColor()
-            block_8.selectNewColor()
-            block_9.selectNewColor()
-            block_10.selectNewColor()
-            block_11.selectNewColor()
-            block_12.selectNewColor()
-            block_13.selectNewColor()
-            block_14.selectNewColor()
-            block_15.selectNewColor()
-            block_16.selectNewColor()
-            block_17.selectNewColor()
-            block_18.selectNewColor()
-            block_19.selectNewColor()
-            block_20.selectNewColor()
-            block_21.selectNewColor()
-            block_22.selectNewColor()
-            block_23.selectNewColor()
-            block_24.selectNewColor()
-            block_25.selectNewColor()
-            block_26.selectNewColor()
-            block_27.selectNewColor()
-            block_28.selectNewColor()
-            block_29.selectNewColor()
-            block_30.selectNewColor()
-            block_31.selectNewColor()
-            block_32.selectNewColor()
-            block_33.selectNewColor()
-            block_34.selectNewColor()
-            block_35.selectNewColor()
-            block_36.selectNewColor()
+            var x = 0
+            while x < 36 {
+                blockList[x].selectNewColor()
+                x += 1
+            }
         }
-        
         self.lastUpdateTime = currentTime
     }
     
     func addTime(_ timeToAdd:Int) {
-        gameTime += timeToAdd
-        let addedTimeLabel = SKLabelNode(text: "+\(timeToAdd)s")
-        addedTimeLabel.fontSize = timeLabel.fontSize
-        addedTimeLabel.fontName = timeLabel.fontName
-        addedTimeLabel.fontColor = .green
-        addedTimeLabel.position = timeLabel.position
-        addedTimeLabel.horizontalAlignmentMode = timeLabel.horizontalAlignmentMode
-        addedTimeLabel.position.y += 25
-        self.addChild(addedTimeLabel)
-        addedTimeLabel.run(SKAction.moveTo(y: addedTimeLabel.position.y + 100, duration: 1.5), completion: {
-            addedTimeLabel.removeFromParent()
-        })
+        if gameMode != "Fragile" {
+            gameTime += timeToAdd
+            let addedTimeLabel = SKLabelNode(text: "+\(timeToAdd)s")
+            addedTimeLabel.fontSize = timeLabel.fontSize
+            addedTimeLabel.fontName = timeLabel.fontName
+            addedTimeLabel.fontColor = .green
+            addedTimeLabel.position = timeLabel.position
+            addedTimeLabel.horizontalAlignmentMode = timeLabel.horizontalAlignmentMode
+            addedTimeLabel.position.y += 25
+            self.addChild(addedTimeLabel)
+            addedTimeLabel.run(SKAction.moveTo(y: addedTimeLabel.position.y + 100, duration: 1.5), completion: {
+                addedTimeLabel.removeFromParent()
+            })
+        }
     }
     
     func addScore(_ scoreToAdd:Int) {
@@ -792,15 +881,145 @@ class GameScene: SKScene {
         })
     }
     
+    func checkSpecialLoss() {
+        if gameMode == "Fragile" {
+            var x = 0
+            var blockCount_Red = 0
+            var blockCount_Blue = 0
+            var blockCount_Green = 0
+            var blockCount_Yellow = 0
+            var blockCount_Purple = 0
+            while x < blockList.count {
+                if blockList[x].xScale >= 0.2  {
+                    if blockList[x].currentColor == "Red" {
+                        blockCount_Red += 1
+                    } else if blockList[x].currentColor == "Blue" {
+                        blockCount_Blue += 1
+                    } else if blockList[x].currentColor == "Green" {
+                        blockCount_Green += 1
+                    } else if blockList[x].currentColor == "Yellow" {
+                        blockCount_Yellow += 1
+                    } else if blockList[x].currentColor == "Purple" {
+                        blockCount_Purple += 1
+                    } else if blockList[x].currentColor == "Rainbow" {
+                        blockCount_Red += 1
+                        blockCount_Blue += 1
+                        blockCount_Green += 1
+                        blockCount_Yellow += 1
+                        blockCount_Purple += 1
+                    }
+                }
+                
+                x += 1
+            }
+            
+            if blockCount_Red > 5 || blockCount_Blue > 5 || blockCount_Green > 5 || blockCount_Yellow > 5 || blockCount_Purple > 5 {
+                gameTime = 60
+            } else if blockCount_Red > 4 || blockCount_Blue > 4 || blockCount_Green > 4 || blockCount_Yellow > 4 || blockCount_Purple > 4 {
+                gameTime = 15
+            } else if blockCount_Red > 3 || blockCount_Blue > 3 || blockCount_Green > 3 || blockCount_Yellow > 3 || blockCount_Purple > 3 {
+                gameTime = 10
+            } else if blockCount_Red > 2 || blockCount_Blue > 2 || blockCount_Green > 2 || blockCount_Yellow > 2 || blockCount_Purple > 2 {
+                gameTime = 5
+            } else {
+                gameTime = 0
+            }
+        }
+    }
+    
+    func saveHighscores() {
+        if gameMode == "Normal" {
+            if gameScore > highScore {
+                highScore = gameScore
+                defaults.set(highScore, forKey: "highScore")
+            }
+            
+            if gamePlayTime > longestGame {
+                longestGame = gamePlayTime
+                defaults.set(longestGame, forKey: "longestGame")
+            }
+        } else if gameMode == "Shuffle" {
+            if gameScore > highScore_Shuffle {
+                highScore_Shuffle = gameScore
+                defaults.set(highScore_Shuffle, forKey: "highScore_Shuffle")
+            }
+            
+            if gamePlayTime > longestGame_Shuffle {
+                longestGame_Shuffle = gamePlayTime
+                defaults.set(longestGame_Shuffle, forKey: "longestGame_Shuffle")
+            }
+        } else if gameMode == "Spin" {
+            if gameScore > highScore_Spin {
+                highScore_Spin = gameScore
+                defaults.set(highScore_Spin, forKey: "highScore_Spin")
+            }
+            
+            if gamePlayTime > longestGame_Spin {
+                longestGame_Spin = gamePlayTime
+                defaults.set(longestGame_Spin, forKey: "longestGame_Spin")
+            }
+        } else if gameMode == "Flip" {
+            if gameScore > highScore_Flip {
+                highScore_Flip = gameScore
+                defaults.set(highScore_Flip, forKey: "highScore_Flip")
+            }
+            
+            if gamePlayTime > longestGame_Flip {
+                longestGame_Flip = gamePlayTime
+                defaults.set(longestGame_Flip, forKey: "longestGame_Flip")
+            }
+        } else if gameMode == "Fragile" {
+            if gameScore > highScore_Fragile {
+                highScore_Fragile = gameScore
+                defaults.set(highScore_Fragile, forKey: "highScore_Fragile")
+            }
+            
+            if gamePlayTime > longestGame_Fragile {
+                longestGame_Fragile = gamePlayTime
+                defaults.set(longestGame_Fragile, forKey: "longestGame_Fragile")
+            }
+        }
+    }
+    
     func colorize(_ block:Block) {
         block.run(SKAction.fadeAlpha(to: 0.45, duration: 0.2))
+        if soundOn {
+            self.run(blockSound3)
+        }
     }
     
     func uncolorize(_ block:Block) {
         block.run(SKAction.fadeAlpha(to: 1, duration: 0.2))
     }
     
+    func hintScale(_ block:Block) {
+        block.run(SKAction.scale(to: 0.75, duration: 0.15))
+        if soundOn {
+            self.run(blockSound2)
+        }
+    }
+    
+    func hintDescale(_ block:Block) {
+        block.run(SKAction.scale(to: 1.0, duration: 0.15))
+    }
+    
     func backgroundHeartBeat() {
+        if soundOn && freeSecondPassed {
+            if gameTime > 300 {
+                self.run(timeSound_B)
+            } else if gameTime > 15 {
+                if gameMode != "Fragile" {
+                    self.run(timeSound)
+                }
+            } else if gameTime > 10 {
+                self.run(timeSound_Y)
+            } else if gameTime > 5 {
+                self.run(timeSound_O)
+            } else {
+                self.run(timeSound_R)
+            }
+        }
+        
         if gameTime < 6 {
             background.run(SKAction.colorize(with: .red, colorBlendFactor: 1.0, duration: 0.48),completion:{
                 self.background.run(SKAction.colorize(with: .white, colorBlendFactor: 1.0, duration: 0.48))
@@ -816,42 +1035,169 @@ class GameScene: SKScene {
         }
     }
     
+    func highlightFirstMove(_ refBlock:Int) {
+        var highlightArray = [Block]()
+        highlightArray.append(self.blockList[refBlock])
+        highlightArray = self.deepenHighlightArray(self.blockList[refBlock], oldHighlightArray: highlightArray)
+        
+        if highlightArray.count < 3 {
+            highlightFirstMove(refBlock + 1)
+        } else if self.blockList[refBlock].currentColor != "Grey" {
+            var blockHigh = 0
+            var timeOffset:Double = 0
+            while blockHigh < highlightArray.count {
+                let localBlock = highlightArray[blockHigh]
+                print(localBlock.blockID())
+                if !blockArray.contains(localBlock) {
+                    timeOffset += 1
+                    self.run(SKAction.wait(forDuration: 0.1 * timeOffset),completion:{
+                        self.hintScale(localBlock)
+                        self.run(SKAction.wait(forDuration: 0.35),completion:{
+                            self.hintDescale(localBlock)
+                        })
+                    })
+                }
+                blockHigh += 1
+            }
+        }
+    }
+    
+    func deepenHighlightArray(_ fromBlock:Block, oldHighlightArray:[Block]) -> [Block] {
+        var x = 0
+        var newHighlightArray = oldHighlightArray
+        while x < fromBlock.trueNeighbors.count {
+            if fromBlock.trueNeighbors[x].currentColor == fromBlock.currentColor || fromBlock.trueNeighbors[x].currentColor == "Rainbow" {
+                if !newHighlightArray.contains(fromBlock.trueNeighbors[x]) {
+                    newHighlightArray.append(fromBlock.trueNeighbors[x])
+                    newHighlightArray = self.deepenHighlightArray(fromBlock.trueNeighbors[x], oldHighlightArray: newHighlightArray)
+                } else {
+                    print("Couldn't add block #\(fromBlock.trueNeighbors[x].blockID())")
+                }
+            }
+            x += 1
+        }
+        
+        return newHighlightArray
+    }
+    
+    func selectRandomBlock() -> Block {
+        let choice = Int(arc4random_uniform(36))
+        var block = blockList[choice]
+        
+        if blockArray.contains(block) {
+            block = selectRandomBlock()
+        }
+        
+        return blockList[choice]
+    }
+    
     func massUpdateColor() {
-        block_1.updateColor()
-        block_2.updateColor()
-        block_3.updateColor()
-        block_4.updateColor()
-        block_5.updateColor()
-        block_6.updateColor()
-        block_7.updateColor()
-        block_8.updateColor()
-        block_9.updateColor()
-        block_10.updateColor()
-        block_11.updateColor()
-        block_12.updateColor()
-        block_13.updateColor()
-        block_14.updateColor()
-        block_15.updateColor()
-        block_16.updateColor()
-        block_17.updateColor()
-        block_18.updateColor()
-        block_19.updateColor()
-        block_20.updateColor()
-        block_21.updateColor()
-        block_22.updateColor()
-        block_23.updateColor()
-        block_24.updateColor()
-        block_25.updateColor()
-        block_26.updateColor()
-        block_27.updateColor()
-        block_28.updateColor()
-        block_29.updateColor()
-        block_30.updateColor()
-        block_31.updateColor()
-        block_32.updateColor()
-        block_33.updateColor()
-        block_34.updateColor()
-        block_35.updateColor()
-        block_36.updateColor()
+        var x = 0
+        while x < 36 {
+            blockList[x].updateColor()
+            blockList[x].setScale(1)
+            x += 1
+        }
+    }
+    
+    func setUpLayers() {
+        blockLayers[0].append(block_1)
+        blockLayers[0].append(block_2)
+        blockLayers[0].append(block_3)
+        blockLayers[0].append(block_4)
+        blockLayers[0].append(block_5)
+        blockLayers[0].append(block_6)
+        blockLayers[0].append(block_7)
+        blockLayers[0].append(block_12)
+        blockLayers[0].append(block_13)
+        blockLayers[0].append(block_18)
+        blockLayers[0].append(block_19)
+        blockLayers[0].append(block_24)
+        blockLayers[0].append(block_25)
+        blockLayers[0].append(block_30)
+        blockLayers[0].append(block_31)
+        blockLayers[0].append(block_32)
+        blockLayers[0].append(block_33)
+        blockLayers[0].append(block_34)
+        blockLayers[0].append(block_35)
+        blockLayers[0].append(block_36)
+        
+        blockLayers[1].append(block_8)
+        blockLayers[1].append(block_9)
+        blockLayers[1].append(block_10)
+        blockLayers[1].append(block_11)
+        blockLayers[1].append(block_14)
+        blockLayers[1].append(block_20)
+        blockLayers[1].append(block_26)
+        blockLayers[1].append(block_27)
+        blockLayers[1].append(block_28)
+        blockLayers[1].append(block_29)
+        blockLayers[1].append(block_23)
+        blockLayers[1].append(block_17)
+        
+        blockLayers[2].append(block_15)
+        blockLayers[2].append(block_16)
+        blockLayers[2].append(block_21)
+        blockLayers[2].append(block_22)
+    }
+    
+    func shuffleLayers() {
+        let L1_ANIM_LEN:Double = 0.75
+        let L2_ANIM_LEN:Double = 0.6
+        let L3_ANIM_LEN:Double = 0.45
+        
+        var layer_pos = 0
+        while layer_pos < blockLayers[0].count {
+            if layer_pos != blockLayers[0].count - 1 {
+                blockLayers[0][layer_pos].run(SKAction.move(to: blockLayers[0][layer_pos + 1].position, duration: L1_ANIM_LEN))
+            } else {
+                blockLayers[0][layer_pos].run(SKAction.move(to: blockLayers[0][0].position, duration: L1_ANIM_LEN))
+            }
+            layer_pos += 1
+            
+            if soundOn {
+                if layer_pos % 2 == 0 {
+                    self.run(specialSound)
+                } else {
+                    self.run(specialSound2)
+                }
+            }
+        }
+        
+        layer_pos = 0
+        while layer_pos < blockLayers[1].count {
+            if layer_pos != blockLayers[1].count - 1 {
+                blockLayers[1][layer_pos].run(SKAction.move(to: blockLayers[1][layer_pos + 1].position, duration: L2_ANIM_LEN))
+            } else {
+                blockLayers[1][layer_pos].run(SKAction.move(to: blockLayers[1][0].position, duration: L2_ANIM_LEN))
+            }
+            layer_pos += 1
+            
+            if soundOn {
+                if layer_pos % 2 == 0 {
+                    self.run(specialSound)
+                } else {
+                    self.run(specialSound2)
+                }
+            }
+        }
+        
+        layer_pos = 0
+        while layer_pos < blockLayers[2].count {
+            if layer_pos != blockLayers[2].count - 1 {
+                blockLayers[2][layer_pos].run(SKAction.move(to: blockLayers[2][layer_pos + 1].position, duration: L3_ANIM_LEN))
+            } else {
+                blockLayers[2][layer_pos].run(SKAction.move(to: blockLayers[2][0].position, duration: L3_ANIM_LEN))
+            }
+            layer_pos += 1
+            
+            if soundOn {
+                if layer_pos % 2 == 0 {
+                    self.run(specialSound)
+                } else {
+                    self.run(specialSound2)
+                }
+            }
+        }
     }
 }

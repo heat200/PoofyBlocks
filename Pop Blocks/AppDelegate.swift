@@ -26,12 +26,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             elapsedTime = elapTime as! Int
         }
         
-        if let blcksPopped = defaults.object(forKey: "blocksPopped") {
-            blocksPopped = blcksPopped as! Int
+        if let hiScore2 = defaults.object(forKey: "highScore_Shuffle") {
+            highScore_Shuffle = hiScore2 as! Int
         }
         
-        if let last3 = defaults.object(forKey: "last3Games") {
-            last3Games = last3 as! [Int]
+        if let timeHiScore2 = defaults.object(forKey: "longestGame_Shuffle") {
+            longestGame_Shuffle = timeHiScore2 as! Int
+        }
+        
+        if let hiScore3 = defaults.object(forKey: "highScore_Spin") {
+            highScore_Spin = hiScore3 as! Int
+        }
+        
+        if let timeHiScore3 = defaults.object(forKey: "longestGame_Spin") {
+            longestGame_Spin = timeHiScore3 as! Int
+        }
+        
+        if let hiScore4 = defaults.object(forKey: "highScore_Flip") {
+            highScore_Flip = hiScore4 as! Int
+        }
+        
+        if let timeHiScore4 = defaults.object(forKey: "longestGame_Flip") {
+            longestGame_Flip = timeHiScore4 as! Int
+        }
+        
+        if let hiScore5 = defaults.object(forKey: "highScore_Fragile") {
+            highScore_Fragile = hiScore5 as! Int
+        }
+        
+        if let timeHiScore5 = defaults.object(forKey: "longestGame_Fragile") {
+            longestGame_Fragile = timeHiScore5 as! Int
+        }
+        
+        if let blcksPopped = defaults.object(forKey: "blocksPopped") {
+            blocksPopped = blcksPopped as! Int
         }
         
         if let sound = defaults.object(forKey: "soundOn") {

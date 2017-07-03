@@ -18,19 +18,25 @@ class Block:SKSpriteNode {
     var trueNeighbors = [Block]()
     
     func popAnimation(_ pos:Double) {
-        self.run(SKAction.wait(forDuration: 0.07 * pos), completion: {
+        self.run(SKAction.wait(forDuration: 0.1 * pos), completion: { //Default pop distance: 0.07s
+            self.xScale = 1
+            self.yScale = 1
+            let size = self.size.width
+            let actionSequencePrimary = SKAction.sequence([SKAction.resize(toWidth: 0, height: 0, duration: 0.01),SKAction.wait(forDuration: 0.04),SKAction.resize(toWidth: size, height: size, duration: 0.6)]) //0.65s
+            self.run(actionSequencePrimary)
+            
             let nBlock = SKSpriteNode(imageNamed: "Block_\(self.currentColor)")
             nBlock.size = self.size
             nBlock.position = self.position
-            nBlock.alpha = 0.9
+            nBlock.alpha = 0.65
             self.parent?.addChild(nBlock)
             
             if soundOn {
                 self.run(self.popSound)
             }
             
-            let newAction = SKAction.group([SKAction.resize(toWidth: self.size.width * 2.5, height: self.size.height * 2.5, duration: 0.7),SKAction.fadeAlpha(to: 0, duration: 0.7)])
-            nBlock.run(newAction, completion: {
+            let actionSequence = SKAction.sequence([SKAction.resize(toWidth: self.size.width * 1.5, height: self.size.height * 1.5, duration: 0.22),SKAction.wait(forDuration: 0.05),SKAction.resize(toWidth: 0, height: 0, duration: 0.53)]) // 0.8s
+            nBlock.run(actionSequence, completion: {
                 nBlock.removeFromParent()
             })
             
@@ -87,12 +93,20 @@ class Block:SKSpriteNode {
                 bonusChanceMod = (self.returnPurpleNeighbors() * self.returnPurpleNeighbors() * 2) - 15
             }
             
-            if randNum2 < 900 && randNum2 >= (875 - bonusChanceMod) {
-                type = "Bonus_Points"
-            } else if randNum2 >= 900 {
-                type = "Bonus_Time"
+            if gameMode != "Fragile" {
+                if randNum2 < 900 && randNum2 >= (875 - bonusChanceMod) {
+                    type = "Bonus_Points"
+                } else if randNum2 >= 900 {
+                    type = "Bonus_Time"
+                } else {
+                    type = "Normal"
+                }
             } else {
-                type = "Normal"
+                if randNum2 >= (875 - bonusChanceMod) {
+                    type = "Bonus_Points"
+                } else {
+                    type = "Normal"
+                }
             }
             
             updateColor()
@@ -110,14 +124,14 @@ class Block:SKSpriteNode {
         }
         
         if currentColor == "Grey" {
-            let parent = self.parent as! GameScene
+            let parent = self.parent!.parent as! GameScene
             parent.uncolorize(self)
         }
     }
     
     func setUpAcceptedBlocks() {
         let id = self.blockID()
-        let parent = self.parent as! GameScene
+        let parent = self.parent!.parent as! GameScene
         
         switch id {
         case 1:

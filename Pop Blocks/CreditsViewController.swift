@@ -32,5 +32,8 @@ class CreditsViewController: UIViewController {
     
     @IBAction func returnToMenu() {
         self.dismiss(animated: true, completion: {})
+        if soundOn {
+            player.play()
+        }
     }
 }

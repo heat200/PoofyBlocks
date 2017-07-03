@@ -24,6 +24,7 @@ class GKTrafficHandler:NSObject, GKGameCenterControllerDelegate {
                 } else if localPlayer.isAuthenticated {
                     _enableGameCenter = true
                     playerName = localPlayer.alias!
+                    mVC.leadersBtn.isEnabled = true
                     
                     //Works without the following bit but have it just incase I need the default identifier later on
                     localPlayer.loadDefaultLeaderboardIdentifier(completionHandler: { (leaderboardIdentifier, error) in
