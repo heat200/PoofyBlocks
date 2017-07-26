@@ -266,6 +266,7 @@ class GameScene: SKScene {
             elapsedTime += gamePlayTime
             defaults.set(elapsedTime, forKey: "elapsedTime")
             defaults.set(blocksPopped, forKey: "blocksPopped")
+            GK_TRAFFIC_HANDLER.submitHighScores()
             self.view?.window?.rootViewController?.dismiss(animated: true, completion: {})
         } else if node == volumeButton {
             self.toggleVolume()
@@ -494,6 +495,12 @@ class GameScene: SKScene {
     
     func timeOver() {
         elapsedTime += gamePlayTime
+        if gameMode == "Fragile" {
+            timeOverLabel.text = "Finished!"
+        } else {
+            timeOverLabel.text = "Time Up!"
+        }
+        
         timeOverLabel.isHidden = false
         background.color = .black
         defaults.set(elapsedTime, forKey: "elapsedTime")
@@ -701,13 +708,16 @@ class GameScene: SKScene {
             }
             
             if gameTime <= 0 {
+                gamePlayTime += 1
                 gameTime = 0
                 timeOver()
             } else {
                 self.backgroundHeartBeat()
+                self.fixBoard()
                 if gameTime == 60 && !freeSecondPassed {
                     freeSecondPassed = true
                 } else {
+                    gamePlayTime += 1
                     if randLapse <= 0 {
                         if gameMode == "Shuffle" && blockArray.count == 0 {
                             randLapse = Int(arc4random_uniform(3) + 1)
@@ -762,7 +772,6 @@ class GameScene: SKScene {
                     }
                     
                     hintLapse += 1
-                    gamePlayTime += 1
                     if gameTime > 300 {
                         if gameTime > 5000 {
                             self.addScore(150)
@@ -1150,8 +1159,10 @@ class GameScene: SKScene {
         while layer_pos < blockLayers[0].count {
             if layer_pos != blockLayers[0].count - 1 {
                 blockLayers[0][layer_pos].run(SKAction.move(to: blockLayers[0][layer_pos + 1].position, duration: L1_ANIM_LEN))
+                blockLayers[0][layer_pos].lastPosition = blockLayers[0][layer_pos + 1].position
             } else {
                 blockLayers[0][layer_pos].run(SKAction.move(to: blockLayers[0][0].position, duration: L1_ANIM_LEN))
+                blockLayers[0][layer_pos].lastPosition = blockLayers[0][0].position
             }
             layer_pos += 1
             
@@ -1168,8 +1179,10 @@ class GameScene: SKScene {
         while layer_pos < blockLayers[1].count {
             if layer_pos != blockLayers[1].count - 1 {
                 blockLayers[1][layer_pos].run(SKAction.move(to: blockLayers[1][layer_pos + 1].position, duration: L2_ANIM_LEN))
+                blockLayers[1][layer_pos].lastPosition = blockLayers[1][layer_pos + 1].position
             } else {
                 blockLayers[1][layer_pos].run(SKAction.move(to: blockLayers[1][0].position, duration: L2_ANIM_LEN))
+                blockLayers[1][layer_pos].lastPosition = blockLayers[1][0].position
             }
             layer_pos += 1
             
@@ -1186,8 +1199,10 @@ class GameScene: SKScene {
         while layer_pos < blockLayers[2].count {
             if layer_pos != blockLayers[2].count - 1 {
                 blockLayers[2][layer_pos].run(SKAction.move(to: blockLayers[2][layer_pos + 1].position, duration: L3_ANIM_LEN))
+                blockLayers[2][layer_pos].lastPosition = blockLayers[2][layer_pos + 1].position
             } else {
                 blockLayers[2][layer_pos].run(SKAction.move(to: blockLayers[2][0].position, duration: L3_ANIM_LEN))
+                blockLayers[2][layer_pos].lastPosition = blockLayers[2][0].position
             }
             layer_pos += 1
             
@@ -1198,6 +1213,20 @@ class GameScene: SKScene {
                     self.run(specialSound2)
                 }
             }
+        }
+    }
+    
+    func fixBoard() {
+        if shouldResetBlockPlacement {
+            var x = 0
+            while x < 36 {
+                blockList[x].position = blockList[x].lastPosition
+                x += 1
+            }
+            blockHolder.xScale = 1
+            blockHolder.yScale = 1
+            blockHolder.zRotation = 0
+            shouldResetBlockPlacement = false
         }
     }
 }

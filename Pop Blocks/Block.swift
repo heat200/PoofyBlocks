@@ -16,6 +16,7 @@ class Block:SKSpriteNode {
     var popSound = SKAction.playSoundFileNamed("popSound2.m4a", waitForCompletion: false)
     var acceptedBlocks = [Block]()
     var trueNeighbors = [Block]()
+    var lastPosition = CGPoint()
     
     func popAnimation(_ pos:Double) {
         self.run(SKAction.wait(forDuration: 0.1 * pos), completion: { //Default pop distance: 0.07s
@@ -515,6 +516,7 @@ class Block:SKSpriteNode {
                 acceptedBlocks.append(parent.block_7)
             }
         }
+        self.lastPosition = self.position
     }
     
     func blockID() -> Int {

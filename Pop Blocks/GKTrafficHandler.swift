@@ -41,23 +41,105 @@ class GKTrafficHandler:NSObject, GKGameCenterControllerDelegate {
     }
     
     func submitHighScores() {
-        let bestTimeInt = GKScore(leaderboardIdentifier: LB_ID_TIME)
+        var bestTimeInt = GKScore(leaderboardIdentifier: LB_ID_TIME)
         bestTimeInt.value = Int64(longestGame)
         GKScore.report([bestTimeInt]) { (error) in
             if error != nil {
                 print(error!.localizedDescription)
             } else {
-                print("Best Time submitted to your Leaderboard!")
+                print("Best Time submitted to your Leaderboard! (Normal)")
             }
         }
         
-        let bestScoreInt = GKScore(leaderboardIdentifier: LB_ID_SCORE)
+        var bestScoreInt = GKScore(leaderboardIdentifier: LB_ID_SCORE)
         bestScoreInt.value = Int64(highScore)
         GKScore.report([bestScoreInt]) { (error) in
             if error != nil {
                 print(error!.localizedDescription)
             } else {
-                print("Best Score submitted to your Leaderboard!")
+                print("Best Score submitted to your Leaderboard! (Normal)")
+            }
+        }
+        
+        if ncPurchaseMade {
+            bestTimeInt = GKScore(leaderboardIdentifier: LB_ID_TIME_SHUFFLE)
+            bestTimeInt.value = Int64(longestGame_Shuffle)
+            GKScore.report([bestTimeInt]) { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print("Best Time submitted to your Leaderboard! (Shuffle)")
+                }
+            }
+            
+            bestScoreInt = GKScore(leaderboardIdentifier: LB_ID_SCORE_SHUFFLE)
+            bestScoreInt.value = Int64(highScore_Shuffle)
+            GKScore.report([bestScoreInt]) { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print("Best Score submitted to your Leaderboard! (Shuffle)")
+                }
+            }
+            
+            bestTimeInt = GKScore(leaderboardIdentifier: LB_ID_TIME_SPIN)
+            bestTimeInt.value = Int64(longestGame_Spin)
+            GKScore.report([bestTimeInt]) { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print("Best Time submitted to your Leaderboard! (Spin)")
+                }
+            }
+            
+            bestScoreInt = GKScore(leaderboardIdentifier: LB_ID_SCORE_SPIN)
+            bestScoreInt.value = Int64(highScore_Spin)
+            GKScore.report([bestScoreInt]) { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print("Best Score submitted to your Leaderboard! (Spin)")
+                }
+            }
+            
+            bestTimeInt = GKScore(leaderboardIdentifier: LB_ID_TIME_FLIP)
+            bestTimeInt.value = Int64(longestGame_Flip)
+            GKScore.report([bestTimeInt]) { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print("Best Time submitted to your Leaderboard! (Flip)")
+                }
+            }
+            
+            bestScoreInt = GKScore(leaderboardIdentifier: LB_ID_SCORE_FLIP)
+            bestScoreInt.value = Int64(highScore_Flip)
+            GKScore.report([bestScoreInt]) { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print("Best Score submitted to your Leaderboard! (Flip)")
+                }
+            }
+            
+            bestTimeInt = GKScore(leaderboardIdentifier: LB_ID_TIME_FRAGILE)
+            bestTimeInt.value = Int64(longestGame_Fragile)
+            GKScore.report([bestTimeInt]) { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print("Best Time submitted to your Leaderboard! (Fragile)")
+                }
+            }
+            
+            bestScoreInt = GKScore(leaderboardIdentifier: LB_ID_SCORE_FRAGILE)
+            bestScoreInt.value = Int64(highScore_Fragile)
+            GKScore.report([bestScoreInt]) { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print("Best Score submitted to your Leaderboard! (Fragile)")
+                }
             }
         }
     }

@@ -10,6 +10,7 @@ import UIKit
 import GameKit
 import AVFoundation
 import StoreKit
+import GoogleMobileAds
 
 let defaults = UserDefaults.standard
 let FULL_GAME_ID = "com.Mazariegos.PoofyBlocks.FullVersion"
@@ -26,25 +27,43 @@ var playerName = ""
 var DEFAULT_LB = ""
 var LB_ID_SCORE = "PoofyBlocks_Highest_Score"
 var LB_ID_TIME = "PoofyBlocks_Longest_Time"
+var LB_ID_SCORE_SHUFFLE = "PoofyBlocks_Highest_Score_Shuffle"
+var LB_ID_TIME_SHUFFLE = "PoofyBlocks_Longest_Time_Shuffle"
+var LB_ID_SCORE_SPIN = "PoofyBlocks_Highest_Score_Spin"
+var LB_ID_TIME_SPIN = "PoofyBlocks_Longest_Time_Spin"
+var LB_ID_SCORE_FLIP = "PoofyBlocks_Highest_Score_Flip"
+var LB_ID_TIME_FLIP = "PoofyBlocks_Longest_Time_Flip"
+var LB_ID_SCORE_FRAGILE = "PoofyBlocks_Highest_Score_Fragile"
+var LB_ID_TIME_FRAGILE = "PoofyBlocks_Longest_Time_Fragile"
 var mVC:MainViewController!
 var player = AVAudioPlayer()
+var shouldResetBlockPlacement = false
 
-class MainViewController: UIViewController,SKProductsRequestDelegate,SKPaymentTransactionObserver {
+class MainViewController: UIViewController,SKProductsRequestDelegate,SKPaymentTransactionObserver, GADBannerViewDelegate {
     @IBOutlet var iconDistance: NSLayoutConstraint!
     @IBOutlet var playDistance: NSLayoutConstraint!
-    
     @IBOutlet var leftBtn: UIButton!
     @IBOutlet var rightBtn: UIButton!
     @IBOutlet var playBtn: UIButton!
-    @IBOutlet var buyBtn: UIButton!
     @IBOutlet var leadersBtn: UIButton!
+    let bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        ncPurchaseMade = true
+        bannerView.delegate = self
+        bannerView.adUnitID = "ca-app-pub-8229286366665385/9081545037"
+        bannerView.rootViewController = self
+        let request = GADRequest()
+        request.testDevices = [kGADSimulatorID, "d20f5aacd954f82d48e2b613e9defcb3"]
+        bannerView.load(request)
+        bannerView.frame.origin.x = 0
+        bannerView.frame.origin.y = self.view.frame.maxY - bannerView.frame.height
+        
         playBtn.titleLabel?.text = gameMode
         if ncPurchaseMade {
             print("Premium version PURCHASED!")
-            buyBtn.isHidden = true
         } else {
             print("Premium version LOCKED!")
         }
@@ -70,11 +89,13 @@ class MainViewController: UIViewController,SKProductsRequestDelegate,SKPaymentTr
             GK_TRAFFIC_HANDLER.authLocalPlayer()
         }
         
-        UIView.animate(withDuration: 2.5) {
-            self.iconDistance.constant = 45
-            self.playDistance.constant = 48
+        UIView.animate(withDuration: 0.75) {
+            self.iconDistance.constant = 40
+            self.playDistance.constant = 30
             self.view.layoutIfNeeded()
+            self.view.addSubview(self.bannerView)
         }
+        
     }
     
     func fetchAvailableProducts()  {
@@ -123,7 +144,7 @@ class MainViewController: UIViewController,SKProductsRequestDelegate,SKPaymentTr
                 case .failed:
                     SKPaymentQueue.default().finishTransaction(trans)
                     print("WTF-FAILED CASE")
-                    print(trans.error)
+                    print(trans.error as Any)
                     print(trans.payment.productIdentifier)
                     break
                 case .restored:
@@ -244,38 +265,47 @@ class MainViewController: UIViewController,SKProductsRequestDelegate,SKPaymentTr
         }
     }
     
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        bannerView.alpha = 0
+        UIView.animate(withDuration: 1, animations: {
+            bannerView.alpha = 1
+        })
+    }
+    
     func checkIfModeAvailable() {
         if !ncPurchaseMade && gameMode != "Normal" {
             playBtn.isEnabled = false
-            buyBtn.setTitle("Buy Full Game", for: .highlighted)
+            /*buyBtn.setTitle("Buy Full Game", for: .highlighted)
             buyBtn.setTitle("Buy Full Game", for: .selected)
-            buyBtn.setTitle("Buy Full Game", for: .normal)
+            buyBtn.setTitle("Buy Full Game", for: .normal)*/
         } else {
             playBtn.isEnabled = true
             if !ncPurchaseMade {
-                buyBtn.isHidden = false
+                //buyBtn.isHidden = false
                 if gameMode != "Normal" {
-                    buyBtn.setTitle("Buy Full Game", for: .highlighted)
+                    /*buyBtn.setTitle("Buy Full Game", for: .highlighted)
                     buyBtn.setTitle("Buy Full Game", for: .selected)
-                    buyBtn.setTitle("Buy Full Game", for: .normal)
+                    buyBtn.setTitle("Buy Full Game", for: .normal)*/
                 } else {
-                    buyBtn.setTitle("Restore", for: .highlighted)
+                    /*buyBtn.setTitle("Restore", for: .highlighted)
                     buyBtn.setTitle("Restore", for: .selected)
-                    buyBtn.setTitle("Restore", for: .normal)
+                    buyBtn.setTitle("Restore", for: .normal)*/
                 }
             } else {
-                buyBtn.isHidden = true
+                //buyBtn.isHidden = true
             }
         }
     }
     
     @IBAction func restoreFullGame() {
+        /*
         if buyBtn.titleLabel?.text == "Restore" {
             SKPaymentQueue.default().add(self)
             SKPaymentQueue.default().restoreCompletedTransactions()
         } else {
             purchaseMyProduct(product: iapProducts[0])
         }
+         */
     }
     
     override var prefersStatusBarHidden: Bool {
