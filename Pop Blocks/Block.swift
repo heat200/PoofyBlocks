@@ -60,41 +60,78 @@ class Block:SKSpriteNode {
             let randNum = Int(arc4random_uniform(1000) + 1)
             let randNum2 = Int(arc4random_uniform(1000) + 1)
             lastColor = currentColor
-            let avgChance = 198
-            let redChanceMod = (self.returnRedNeighbors() * 6)
-            let blueChanceMod = (self.returnBlueNeighbors() * 6)
-            let yellowChanceMod = (self.returnYellowNeighbors() * 6)
-            let greenChanceMod = (self.returnGreenNeighbors() * 6)
-            let purpleChanceMod = (self.returnPurpleNeighbors() * 6)
+            var avgChance = 198
+            var redChanceMod = (self.returnRedNeighbors() * 6)
+            var blueChanceMod = (self.returnBlueNeighbors() * 6)
+            var yellowChanceMod = (self.returnYellowNeighbors() * 6)
+            var greenChanceMod = (self.returnGreenNeighbors() * 6)
+            var purpleChanceMod = (self.returnPurpleNeighbors() * 6)
             
-            if randNum <= (avgChance + blueChanceMod) {
-                currentColor = "Blue"
-            } else if randNum <= (avgChance + redChanceMod) * 2 {
-                currentColor = "Red"
-            } else if randNum <= (avgChance + yellowChanceMod) * 3 {
-                currentColor = "Yellow"
-            } else if randNum <= (avgChance + greenChanceMod) * 4 {
-                currentColor = "Green"
-            } else if randNum <= (avgChance + purpleChanceMod) * 5 {
-                currentColor = "Purple"
-            } else if randNum <= 1000 {
-                currentColor = "Rainbow"
+            if gameMode == "Hard" {
+                avgChance = 100
+                redChanceMod = (self.returnRedNeighbors() * 25)
+                blueChanceMod = (self.returnBlueNeighbors() * 25)
+                yellowChanceMod = (self.returnYellowNeighbors() * 25)
+                greenChanceMod = (self.returnGreenNeighbors() * 25)
+                purpleChanceMod = (self.returnPurpleNeighbors() * 25)
+                
+                if randNum <= (avgChance + blueChanceMod) {
+                    currentColor = "Blue"
+                } else if randNum <= (avgChance + redChanceMod) * 2 {
+                    currentColor = "Red"
+                } else if randNum <= (avgChance + yellowChanceMod) * 3 {
+                    currentColor = "Yellow"
+                } else if randNum <= (avgChance + greenChanceMod) * 4 {
+                    currentColor = "Green"
+                } else if randNum <= (avgChance + purpleChanceMod) * 5 {
+                    currentColor = "Purple"
+                } else if randNum <= 505 {
+                    currentColor = "Rainbow"
+                }
+            } else {
+                if randNum <= (avgChance + blueChanceMod) {
+                    currentColor = "Blue"
+                } else if randNum <= (avgChance + redChanceMod) * 2 {
+                    currentColor = "Red"
+                } else if randNum <= (avgChance + yellowChanceMod) * 3 {
+                    currentColor = "Yellow"
+                } else if randNum <= (avgChance + greenChanceMod) * 4 {
+                    currentColor = "Green"
+                } else if randNum <= (avgChance + purpleChanceMod) * 5 {
+                    currentColor = "Purple"
+                } else if randNum <= 1000 {
+                    currentColor = "Rainbow"
+                }
             }
             
             var bonusChanceMod = 0
-            if currentColor == "Blue" {
-                bonusChanceMod = (self.returnBlueNeighbors() * self.returnBlueNeighbors() * 2) - 15
-            } else if currentColor == "Red" {
-                bonusChanceMod = (self.returnRedNeighbors() * self.returnRedNeighbors() * 2) - 15
-            } else if currentColor == "Yellow" {
-                bonusChanceMod = (self.returnYellowNeighbors() * self.returnYellowNeighbors() * 2) - 15
-            } else if currentColor == "Green" {
-                bonusChanceMod = (self.returnGreenNeighbors() * self.returnGreenNeighbors() * 2) - 15
-            } else if currentColor == "Purple" {
-                bonusChanceMod = (self.returnPurpleNeighbors() * self.returnPurpleNeighbors() * 2) - 15
+            if gameMode == "Hard" {
+                if currentColor == "Blue" {
+                    bonusChanceMod = (self.returnBlueNeighbors() * self.returnBlueNeighbors() * 3) - 5
+                } else if currentColor == "Red" {
+                    bonusChanceMod = (self.returnRedNeighbors() * self.returnRedNeighbors() * 3) - 5
+                } else if currentColor == "Yellow" {
+                    bonusChanceMod = (self.returnYellowNeighbors() * self.returnYellowNeighbors() * 3) - 5
+                } else if currentColor == "Green" {
+                    bonusChanceMod = (self.returnGreenNeighbors() * self.returnGreenNeighbors() * 3) - 5
+                } else if currentColor == "Purple" {
+                    bonusChanceMod = (self.returnPurpleNeighbors() * self.returnPurpleNeighbors() * 3) - 5
+                }
+            } else {
+                if currentColor == "Blue" {
+                    bonusChanceMod = (self.returnBlueNeighbors() * self.returnBlueNeighbors() * 2) - 15
+                } else if currentColor == "Red" {
+                    bonusChanceMod = (self.returnRedNeighbors() * self.returnRedNeighbors() * 2) - 15
+                } else if currentColor == "Yellow" {
+                    bonusChanceMod = (self.returnYellowNeighbors() * self.returnYellowNeighbors() * 2) - 15
+                } else if currentColor == "Green" {
+                    bonusChanceMod = (self.returnGreenNeighbors() * self.returnGreenNeighbors() * 2) - 15
+                } else if currentColor == "Purple" {
+                    bonusChanceMod = (self.returnPurpleNeighbors() * self.returnPurpleNeighbors() * 2) - 15
+                }
             }
             
-            if gameMode != "Fragile" {
+            if gameMode != "Fragile" && gameMode != "Hard" {
                 if randNum2 < 900 && randNum2 >= (875 - bonusChanceMod) {
                     type = "Bonus_Points"
                 } else if randNum2 >= 900 {
@@ -102,9 +139,17 @@ class Block:SKSpriteNode {
                 } else {
                     type = "Normal"
                 }
-            } else {
+            } else if gameMode == "Fragile" {
                 if randNum2 >= (875 - bonusChanceMod) {
                     type = "Bonus_Points"
+                } else {
+                    type = "Normal"
+                }
+            } else if gameMode == "Hard" {
+                if randNum2 < 995 && randNum2 >= (990 - bonusChanceMod) {
+                    type = "Bonus_Points"
+                } else if randNum2 >= 995 {
+                    type = "Bonus_Time"
                 } else {
                     type = "Normal"
                 }

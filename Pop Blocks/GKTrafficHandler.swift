@@ -141,6 +141,26 @@ class GKTrafficHandler:NSObject, GKGameCenterControllerDelegate {
                     print("Best Score submitted to your Leaderboard! (Fragile)")
                 }
             }
+            
+            bestTimeInt = GKScore(leaderboardIdentifier: LB_ID_TIME_HARD)
+            bestTimeInt.value = Int64(longestGame_Hard)
+            GKScore.report([bestTimeInt]) { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print("Best Time submitted to your Leaderboard! (Hard)")
+                }
+            }
+            
+            bestScoreInt = GKScore(leaderboardIdentifier: LB_ID_SCORE_HARD)
+            bestScoreInt.value = Int64(highScore_Hard)
+            GKScore.report([bestScoreInt]) { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print("Best Score submitted to your Leaderboard! (Hard)")
+                }
+            }
         }
     }
     

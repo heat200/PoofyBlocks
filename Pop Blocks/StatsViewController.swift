@@ -14,6 +14,7 @@ class StatsViewController: UIViewController {
     @IBOutlet var highscoreSpinLabel:UILabel!
     @IBOutlet var highscoreFlipLabel:UILabel!
     @IBOutlet var highscoreFragileLabel:UILabel!
+    @IBOutlet var highscoreHardLabel:UILabel!
     @IBOutlet var totalTimeLabel:UILabel!
     @IBOutlet var blocksPoppedLabel:UILabel!
     
@@ -28,6 +29,7 @@ class StatsViewController: UIViewController {
         highscoreSpinLabel.text = "Spin: \(highScore_Spin)pts"
         highscoreFlipLabel.text = "Flip: \(highScore_Flip)pts"
         highscoreFragileLabel.text = "Fragile: \(highScore_Fragile)pts"
+        highscoreHardLabel.text = "Hard: \(highScore_Hard)pts"
         totalTimeLabel.text = "Time Played: \(hoursPassed)h \(minutesPassed)m \(secondsPassed)s"
         blocksPoppedLabel.text = "Blocks Popped: \(blocksPopped)"
     }

@@ -25,12 +25,17 @@ var longestGame_Flip = 0
 var highScore_Fragile = 0
 var longestGame_Fragile = 0
 
+var highScore_Hard = 0
+var longestGame_Hard = 0
+
 var soundOn = true
 var blocksPopped = 0
 var gameMode = "Normal"
+var gc:GameScene!
 
 class GameScene: SKScene {
     private var lastUpdateTime : TimeInterval = 0
+    var vc:GameViewController!
     var timeSound_B = SKAction.playSoundFileNamed("timeSound_B.m4a", waitForCompletion: false)
     var timeSound = SKAction.playSoundFileNamed("timeSound.m4a", waitForCompletion: false)
     var timeSound_Y = SKAction.playSoundFileNamed("timeSound_Y.m4a", waitForCompletion: false)
@@ -56,11 +61,13 @@ class GameScene: SKScene {
     var gamePlayTime = 0
     var timeLabel:SKLabelNode!
     var totalTimeLabel:SKLabelNode!
+    var reviveAdLabel:SKLabelNode!
     var scoreLabel:SKLabelNode!
     var highScoreLabel:SKLabelNode!
     var timeOverLabel:SKLabelNode!
     var pauseOverlay:SKSpriteNode!
     var pauseButton:SKSpriteNode!
+    var reviveButton:SKSpriteNode!
     var continueButton:SKSpriteNode!
     var restartButton:SKSpriteNode!
     var menuButton:SKSpriteNode!
@@ -107,11 +114,18 @@ class GameScene: SKScene {
     
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
-        gameTime = DEFAULT_GAMETIME
+        if gameMode == "Hard" {
+            gameTime = 91
+        } else {
+            gameTime = DEFAULT_GAMETIME
+        }
+        gc = self
         pauseOverlay = self.childNode(withName: "pauseOverlay") as! SKSpriteNode
         pauseButton = self.childNode(withName: "pauseButton") as! SKSpriteNode
         continueButton = self.childNode(withName: "continueButton") as! SKSpriteNode
         restartButton = self.childNode(withName: "restartButton") as! SKSpriteNode
+        reviveButton = self.childNode(withName: "reviveButton") as! SKSpriteNode
+        reviveAdLabel = reviveButton.childNode(withName: "reviveAdLabel") as! SKLabelNode
         menuButton = self.childNode(withName: "menuButton") as! SKSpriteNode
         volumeButton = self.childNode(withName: "volumeButton") as! SKSpriteNode
         timeLabel = self.childNode(withName: "timeLabel") as! SKLabelNode
@@ -267,12 +281,16 @@ class GameScene: SKScene {
             defaults.set(elapsedTime, forKey: "elapsedTime")
             defaults.set(blocksPopped, forKey: "blocksPopped")
             GK_TRAFFIC_HANDLER.submitHighScores()
+            self.vc = nil
             self.view?.window?.rootViewController?.dismiss(animated: true, completion: {})
         } else if node == volumeButton {
             self.toggleVolume()
             if soundOn {
                 self.run(blockSound3)
             }
+        } else if node == reviveButton || node == reviveAdLabel {
+            reviveAdLabel.text = "Loading Ad..."
+            self.vc.reviveWithAd()
         } else {
             if timeOverLabel.isHidden {
                 self.safeRemoveBlocks()
@@ -339,6 +357,13 @@ class GameScene: SKScene {
                 }
             }
         }
+    }
+    
+    func reviveGame(withTime:Int) {
+        timeOverLabel.isHidden = true
+        reviveButton.isHidden = true
+        reviveAdLabel.text = "Revive with Ad"
+        gameTime = withTime + 1
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -499,6 +524,9 @@ class GameScene: SKScene {
             timeOverLabel.text = "Finished!"
         } else {
             timeOverLabel.text = "Time Up!"
+            if gameMode != "Hard" {
+                reviveButton.isHidden = false
+            }
         }
         
         timeOverLabel.isHidden = false
@@ -564,7 +592,11 @@ class GameScene: SKScene {
     
     func restartGame() {
         if gameTime != 0 {
-            gameTime = DEFAULT_GAMETIME
+            if gameMode == "Hard" {
+                gameTime = 91
+            } else {
+                gameTime = DEFAULT_GAMETIME
+            }
             elapsedTime += gamePlayTime
             gameScore = 0
             gamePlayTime = 0
@@ -624,6 +656,7 @@ class GameScene: SKScene {
                                     self.massUpdateColor()
                                     self.run(SKAction.wait(forDuration: 0.04),completion:{
                                         self.timeOverLabel.isHidden = true
+                                        self.reviveButton.isHidden = true
                                     })
                                 })
                             })
@@ -632,7 +665,11 @@ class GameScene: SKScene {
                 })
             })
         } else {
-            gameTime = DEFAULT_GAMETIME
+            if gameMode == "Hard" {
+                gameTime = 91
+            } else {
+                gameTime = DEFAULT_GAMETIME
+            }
             elapsedTime += gamePlayTime
             gameScore = 0
             gamePlayTime = 0
@@ -686,6 +723,7 @@ class GameScene: SKScene {
                                     self.block_31.selectNewColor()
                                     self.run(SKAction.wait(forDuration: 0.04),completion:{
                                         self.timeOverLabel.isHidden = true
+                                        self.reviveButton.isHidden = true
                                     })
                                 })
                             })
@@ -772,51 +810,104 @@ class GameScene: SKScene {
                     }
                     
                     hintLapse += 1
-                    if gameTime > 300 {
-                        if gameTime > 5000 {
-                            self.addScore(150)
-                        } else if gameTime > 2500 {
-                            self.addScore(75)
-                        } else if gameTime > 2250 {
-                            self.addScore(67)
-                        } else if gameTime > 2000 {
-                            self.addScore(60)
-                        } else if gameTime > 1750 {
-                            self.addScore(53)
-                        } else if gameTime > 1500 {
-                            self.addScore(45)
-                        } else if gameTime > 1250 {
-                            self.addScore(37)
-                        } else if gameTime > 1200 {
-                            self.addScore(30)
-                        } else if gameTime > 1100 {
-                            self.addScore(27)
-                        } else if gameTime > 1000 {
-                            self.addScore(24)
-                        } else if gameTime > 900 {
-                            self.addScore(21)
-                        } else if gameTime > 800 {
-                            self.addScore(18)
-                        } else if gameTime > 700 {
-                            self.addScore(15)
-                        } else if gameTime > 600 {
-                            self.addScore(12)
-                        } else if gameTime > 500 {
-                            self.addScore(9)
-                        } else if gameTime > 400 {
-                            self.addScore(6)
-                        } else {
-                            self.addScore(3)
-                        }
-                        gameTime -= 2
-                        
-                        if gameTime > 300 {
-                            timeLabel.fontColor = .blue
+                    if gameMode == "Hard" {
+                        if gameTime > 90 {
+                            if gameTime > 5000 {
+                                self.addScore(600)
+                            } else if gameTime > 2500 {
+                                self.addScore(300)
+                            } else if gameTime > 2250 {
+                                self.addScore(150)
+                            } else if gameTime > 2000 {
+                                self.addScore(75)
+                            } else if gameTime > 1750 {
+                                self.addScore(67)
+                            } else if gameTime > 1500 {
+                                self.addScore(60)
+                            } else if gameTime > 1250 {
+                                self.addScore(53)
+                            } else if gameTime > 1200 {
+                                self.addScore(45)
+                            } else if gameTime > 1100 {
+                                self.addScore(37)
+                            } else if gameTime > 1000 {
+                                self.addScore(30)
+                            } else if gameTime > 900 {
+                                self.addScore(27)
+                            } else if gameTime > 800 {
+                                self.addScore(24)
+                            } else if gameTime > 700 {
+                                self.addScore(21)
+                            } else if gameTime > 600 {
+                                self.addScore(18)
+                            } else if gameTime > 500 {
+                                self.addScore(15)
+                            } else if gameTime > 400 {
+                                self.addScore(12)
+                            } else if gameTime > 300 {
+                                self.addScore(9)
+                            } else if gameTime > 200 {
+                                self.addScore(6)
+                            } else {
+                                self.addScore(3)
+                            }
+                            gameTime -= 2
+                            
+                            if gameTime > 90 {
+                                timeLabel.fontColor = .blue
+                            } else {
+                                timeLabel.fontColor = .gray
+                            }
                         } else {
                             timeLabel.fontColor = .gray
                         }
                     } else {
-                        timeLabel.fontColor = .gray
+                        if gameTime > 300 {
+                            if gameTime > 5000 {
+                                self.addScore(150)
+                            } else if gameTime > 2500 {
+                                self.addScore(75)
+                            } else if gameTime > 2250 {
+                                self.addScore(67)
+                            } else if gameTime > 2000 {
+                                self.addScore(60)
+                            } else if gameTime > 1750 {
+                                self.addScore(53)
+                            } else if gameTime > 1500 {
+                                self.addScore(45)
+                            } else if gameTime > 1250 {
+                                self.addScore(37)
+                            } else if gameTime > 1200 {
+                                self.addScore(30)
+                            } else if gameTime > 1100 {
+                                self.addScore(27)
+                            } else if gameTime > 1000 {
+                                self.addScore(24)
+                            } else if gameTime > 900 {
+                                self.addScore(21)
+                            } else if gameTime > 800 {
+                                self.addScore(18)
+                            } else if gameTime > 700 {
+                                self.addScore(15)
+                            } else if gameTime > 600 {
+                                self.addScore(12)
+                            } else if gameTime > 500 {
+                                self.addScore(9)
+                            } else if gameTime > 400 {
+                                self.addScore(6)
+                            } else {
+                                self.addScore(3)
+                            }
+                            gameTime -= 2
+                            
+                            if gameTime > 300 {
+                                timeLabel.fontColor = .blue
+                            } else {
+                                timeLabel.fontColor = .gray
+                            }
+                        } else {
+                            timeLabel.fontColor = .gray
+                        }
                     }
                 }
             }
@@ -844,6 +935,8 @@ class GameScene: SKScene {
             highScoreLabel.text = "Highscore: \(highScore_Flip) pts"
         } else if gameMode == "Fragile" {
             highScoreLabel.text = "Highscore: \(highScore_Fragile) pts"
+        } else if gameMode == "Hard" {
+            highScoreLabel.text = "Highscore: \(highScore_Hard) pts"
         }
         
         saveHighscores()
@@ -987,6 +1080,16 @@ class GameScene: SKScene {
                 longestGame_Fragile = gamePlayTime
                 defaults.set(longestGame_Fragile, forKey: "longestGame_Fragile")
             }
+        } else if gameMode == "Hard" {
+            if gameScore > highScore_Hard {
+                highScore_Hard = gameScore
+                defaults.set(highScore_Hard, forKey: "highScore_Hard")
+            }
+            
+            if gamePlayTime > longestGame_Hard {
+                longestGame_Hard = gamePlayTime
+                defaults.set(longestGame_Hard, forKey: "longestGame_Hard")
+            }
         }
     }
     
@@ -1014,18 +1117,32 @@ class GameScene: SKScene {
     
     func backgroundHeartBeat() {
         if soundOn && freeSecondPassed {
-            if gameTime > 300 {
-                self.run(timeSound_B)
-            } else if gameTime > 15 {
-                if gameMode != "Fragile" {
+            if gameMode == "Hard" {
+                if gameTime > 90 {
+                    self.run(timeSound_B)
+                } else if gameTime > 15 {
                     self.run(timeSound)
+                } else if gameTime > 10 {
+                    self.run(timeSound_Y)
+                } else if gameTime > 5 {
+                    self.run(timeSound_O)
+                } else {
+                    self.run(timeSound_R)
                 }
-            } else if gameTime > 10 {
-                self.run(timeSound_Y)
-            } else if gameTime > 5 {
-                self.run(timeSound_O)
             } else {
-                self.run(timeSound_R)
+                if gameTime > 300 {
+                    self.run(timeSound_B)
+                } else if gameTime > 15 {
+                    if gameMode != "Fragile" {
+                        self.run(timeSound)
+                    }
+                } else if gameTime > 10 {
+                    self.run(timeSound_Y)
+                } else if gameTime > 5 {
+                    self.run(timeSound_O)
+                } else {
+                    self.run(timeSound_R)
+                }
             }
         }
         

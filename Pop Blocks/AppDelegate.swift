@@ -59,6 +59,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             longestGame_Fragile = timeHiScore5 as! Int
         }
         
+        if let hiScore6 = defaults.object(forKey: "highScore_Hard") {
+            highScore_Hard = hiScore6 as! Int
+        }
+        
+        if let timeHiScore6 = defaults.object(forKey: "longestGame_Hard") {
+            longestGame_Hard = timeHiScore6 as! Int
+        }
+        
         if let blcksPopped = defaults.object(forKey: "blocksPopped") {
             blocksPopped = blcksPopped as! Int
         }

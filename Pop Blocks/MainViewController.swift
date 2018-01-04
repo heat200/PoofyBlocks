@@ -35,6 +35,8 @@ var LB_ID_SCORE_FLIP = "PoofyBlocks_Highest_Score_Flip"
 var LB_ID_TIME_FLIP = "PoofyBlocks_Longest_Time_Flip"
 var LB_ID_SCORE_FRAGILE = "PoofyBlocks_Highest_Score_Fragile"
 var LB_ID_TIME_FRAGILE = "PoofyBlocks_Longest_Time_Fragile"
+var LB_ID_SCORE_HARD = "PoofyBlocks_Highest_Score_Hard"
+var LB_ID_TIME_HARD = "PoofyBlocks_Longest_Time_Hard"
 var mVC:MainViewController!
 var player = AVAudioPlayer()
 var shouldResetBlockPlacement = false
@@ -95,7 +97,6 @@ class MainViewController: UIViewController,SKProductsRequestDelegate,SKPaymentTr
             self.view.layoutIfNeeded()
             self.view.addSubview(self.bannerView)
         }
-        
     }
     
     func fetchAvailableProducts()  {
@@ -210,8 +211,10 @@ class MainViewController: UIViewController,SKProductsRequestDelegate,SKPaymentTr
     
     @IBAction func nextMode() {
         if gameMode == "Normal" {
-            gameMode = "Shuffle"
+            gameMode = "Hard"
             leftBtn.isEnabled = true
+        } else if gameMode == "Hard" {
+            gameMode = "Shuffle"
         } else if gameMode == "Shuffle" {
             gameMode = "Spin"
         } else if gameMode == "Spin" {
@@ -229,9 +232,11 @@ class MainViewController: UIViewController,SKProductsRequestDelegate,SKPaymentTr
     }
     
     @IBAction func previousMode() {
-        if gameMode == "Shuffle" {
+        if gameMode == "Hard" {
             gameMode = "Normal"
             leftBtn.isEnabled = false
+        } else if gameMode == "Shuffle" {
+            gameMode = "Hard"
         } else if gameMode == "Spin" {
             gameMode = "Shuffle"
         } else if gameMode == "Flip" {
